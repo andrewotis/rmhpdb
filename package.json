@@ -1,0 +1,28 @@
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-react": "^4.3.0",
+        "axios": "^1.7.2",
+        "bootstrap": "^5.3.3",
+        "laravel-vite-plugin": "^1.0",
+        "react": "^18.3.1",
+        "react-bootstrap": "^2.10.2",
+        "react-dom": "^18.3.1",
+        "react-router-dom": "^6.23.1",
+        "sass": "^1.77.2",
+        "vite": "^5.0"
+    },
+    "dependencies": {
+        "@inertiajs/inertia-react": "^0.8.1",
+        "@inertiajs/react": "^1.1.0",
+        "email-validator": "^2.0.4",
+        "password-validator": "^5.3.0",
+        "react-form-stepper": "^2.0.3",
+        "react-select": "^5.8.0"
+    }
+}

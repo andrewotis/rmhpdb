@@ -133,7 +133,12 @@ export default function Index({ auth }) {
                     </Row>
                     <Row>
                         <Col lg={getColSize()}>
-                            <Button variant="primary" type="submit" className="w-100">
+                            <Button 
+                                variant="primary" 
+                                type="submit" 
+                                className="w-100"
+                                onClick={handleSubmit}
+                            >
                                 Search
                             </Button>
                         </Col>

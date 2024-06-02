@@ -9,7 +9,9 @@
 body {
     display: grid;
     background: #f5f5f5;
-    height: 100vh;
+    /* height: 100vh; */
+    margin-bottom: 80px;
+    min-height: 400px;
 }
 
 .footer {

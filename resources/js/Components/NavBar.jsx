@@ -8,7 +8,7 @@ export default function NavBar({auth}) {
   return (
     <Navbar bg="primary" sticky="top" className="text-white">
         <Container>
-          <Navbar.Brand href="/" className="text-white">Registered Maternity Health Protector Database</Navbar.Brand>
+          <Navbar.Brand href="/" className="text-white">RMHPdb</Navbar.Brand>
           <Navbar.Collapse className="justify-content-end">
             {auth !== null &&
                 <NavDropdown title={auth.email} id="basic-nav-dropdown">

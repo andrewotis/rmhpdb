@@ -70,8 +70,3 @@ Route::get('/register', function() {
     ]);
 });
 
-Route::get('/thankyou', function() {
-    return Inertia::render('ThankYou');
-})->name('thank_you');
-
-

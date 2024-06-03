@@ -1,11 +1,6 @@
 import { useState } from 'react'
 import { router, usePage } from '@inertiajs/react'
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Alert from 'react-bootstrap/Alert';
-import { Container } from 'react-bootstrap';
+import { Form, Button, Container, Col, Row } from 'react-bootstrap';
 import Layout from '../Layouts/Layout';
 import { Stepper, Step } from 'react-form-stepper';
 import RegisterAccountInfo from '../Components/RegisterAccountInfo';

@@ -1,148 +1,40 @@
-import { useState, useEffect } from 'react'
-import { router, usePage } from '@inertiajs/react'
+import { useState } from 'react'
 import Layout from "../Layouts/Layout";
-import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import Button from 'react-bootstrap/Button';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Table from 'react-bootstrap/Table';
+import { Container, Nav } from 'react-bootstrap';
+import AdminUserPrivacy from '../Components/AdminUserPrivacy';
+import AdminFeedbackSettings from '../Components/AdminFeedbackSettings';
 
 export default function Admin({ auth, settings }) {
-    const [values, setValues] = useState({
-        first_name: false,
-        last_name: false,
-        company: false,
-        address: false,
-        address2: false,
-        city: false,
-        state: false,
-        zip: false,
-        country: false,
-        phone_number: false,
-        email: false
-    });
-
-    useEffect(() => {
-        settings.map(setting => {
-            setValues(values => ({
-                ...values,
-                [setting.key]: setting.value == 'true' ? true : false,
-            }))
-        });
-    }, []);
-
-    function handleChange(e) {
-        const key = e.target.id;
-        setValues(values => ({
-            ...values,
-            [key]: !values[key],
-        }))
-    }
-
-    function handleSubmit(e) {
-        e.preventDefault()
-        router.post('/admin', values)
-    }
+    const [activeTab, setActiveTab] = useState('privacy');
 
     return (
         <Layout auth={auth}>
             <Container>
-                <h1 className="fs-3 fw-normal mb-3">Allow users to set these fields to private:</h1>
-                <Form className="w-25" noValidate onSubmit={handleSubmit}>
-                    <Form.Check 
-                        type="switch"
-                        id="first_name"
-                        label="First Name"
-                        className="mb-3"
-                        onChange={handleChange}
-                        checked={values.first_name}
-                    />
-                    <Form.Check 
-                        type="switch"
-                        id="last_name"
-                        label="Last Name"
-                        className="mb-3"
-                        onChange={handleChange}
-                        checked={values.last_name}
-                    />
-                    <Form.Check 
-                        type="switch"
-                        id="company"
-                        label="Company"
-                        className="mb-3"
-                        onChange={handleChange}
-                        checked={values.company}
-                    />
-                    <Form.Check 
-                        type="switch"
-                        id="address"
-                        label="Address"
-                        className="mb-3"
-                        onChange={handleChange}
-                        checked={values.address}
-                    />
-                    <Form.Check 
-                        type="switch"
-                        id="address2"
-                        label="Address2"
-                        className="mb-3"
-                        onChange={handleChange}
-                        checked={values.address2}
-                    />
-                    <Form.Check 
-                        type="switch"
-                        id="city"
-                        label="City"
-                        className="mb-3"
-                        onChange={handleChange}
-                        checked={values.city}
-                    />
-                    <Form.Check 
-                        type="switch"
-                        id="state"
-                        label="State"
-                        className="mb-3"
-                        onChange={handleChange}
-                        checked={values.state}
-                    />
-                    <Form.Check 
-                        type="switch"
-                        id="zip"
-                        label="Zip"
-                        className="mb-3"
-                        onChange={handleChange}
-                        checked={values.zip}
-                    />
-                    <Form.Check 
-                        type="switch"
-                        id="country"
-                        label="Country"
-                        className="mb-3"
-                        onChange={handleChange}
-                        checked={values.country}
-                    />
-                    <Form.Check 
-                        type="switch"
-                        id="phone_number"
-                        label="Phone"
-                        className="mb-3"
-                        onChange={handleChange}
-                        checked={values.phone_number}
-                    />
-                    <Form.Check 
-                        type="switch"
-                        id="email"
-                        label="Email"
-                        className="mb-3"
-                        onChange={handleChange}
-                        checked={values.email}
-                    />
-                    <Button className="w-100" variant="primary" type="submit">
-                        Save
-                    </Button>
-                </Form>
+                <Nav variant="tabs" defaultActiveKey="/home">
+                    <Nav.Item>
+                        <Nav.Link onClick={() => setActiveTab('privacy')}>User Privacy</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link onClick={() => setActiveTab('feedback')}>Feedback Settings</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link disabled onClick={() => setActiveTab('credentials')}>Credentials</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link disabled onClick={() => setActiveTab('sectors')}>Sectors</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link disabled onClick={() => setActiveTab('categories')}>Categories</Nav.Link>
+                    </Nav.Item>
+                </Nav>
+                <AdminUserPrivacy 
+                    display={activeTab == 'privacy'} 
+                    settings={settings} 
+                />
+                <AdminFeedbackSettings
+                    display={activeTab == 'feedback'}
+                    settings={settings}
+                />
             </Container>
         </Layout>
     );

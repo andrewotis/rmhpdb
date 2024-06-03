@@ -9,6 +9,35 @@ use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class AdminController extends Controller {
+    public function viewAdminPage() {
+        if(Auth::user() == null or Auth::user()->type != 'admin') {
+            return redirect('/login');
+        }
+        return Inertia::render('Admin', [
+            'auth' => Auth::user(),
+            'settings' => AdminSetting::all(),
+        ]);
+    }
+
+    public function addRecipient(Request $request) {
+        AdminSetting::create([
+            'type' => 'feedback_recipient',
+            'key' => 'email_address',
+            'value' => $request->input('email')
+        ]);
+
+        // do something after record is added
+
+
+    }
+
+    public function deleteRecipient($email) {
+        $setting = AdminSetting::where('type', 'feedback_recipient')->where('key', 'email_address')->where('value', $email);
+        $setting->delete();
+
+        // do something after record is deleted
+    }
+
     public function updateSettings(Request $request) {
         if(Auth::user() == null or Auth::user()->type != 'admin') {
             return redirect('/login');

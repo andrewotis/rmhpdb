@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { router, usePage } from '@inertiajs/react'
+import { useState } from 'react';
+import { router, usePage } from '@inertiajs/react';
 import Layout from "../Layouts/Layout";
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -14,7 +14,7 @@ export default function Index({ auth }) {
         city: "",
         state: "",
         country: ""
-    })
+    });
 
     function handleChange(e) {
         const key = e.target.id;
@@ -49,7 +49,7 @@ export default function Index({ auth }) {
                     <Row>
                         <Col lg={getColSize()}>
                             <FloatingLabel
-                                controlId="floatingInput"
+                                htmlFor="first_name"
                                 label="First Name"
                                 className="mb-3 mt-2"
                             >
@@ -66,7 +66,7 @@ export default function Index({ auth }) {
                     <Row>
                         <Col lg={getColSize()}>
                             <FloatingLabel 
-                                controlId="floatingPassword" 
+                                htmlFor="last_name"
                                 label="Last Name" 
                                 className="mb-3"
                             >
@@ -83,7 +83,7 @@ export default function Index({ auth }) {
                     <Row>
                         <Col lg={getColSize()}>
                             <FloatingLabel 
-                                controlId="floatingPassword" 
+                                htmlFor="city"
                                 label="City" 
                                 className="mb-3"
                             >
@@ -100,7 +100,7 @@ export default function Index({ auth }) {
                     <Row>
                         <Col lg={getColSize()}>
                             <FloatingLabel 
-                                controlId="floatingPassword" 
+                                htmlFor="state"
                                 label="State" 
                                 className="mb-3"
                             >
@@ -117,7 +117,7 @@ export default function Index({ auth }) {
                     <Row>
                         <Col lg={getColSize()}>
                             <FloatingLabel 
-                                controlId="floatingPassword" 
+                                htmlFor="country"
                                 label="Country" 
                                 className="mb-3"
                             >

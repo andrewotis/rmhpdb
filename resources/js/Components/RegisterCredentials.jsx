@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Container } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import Select from 'react-select';
 
 export default function RegisterCredentials({ display, stepsInfoValid, setStepsInfoValid, credentialsValues, setCredentialsValues, credentials }) {
@@ -16,6 +16,13 @@ export default function RegisterCredentials({ display, stepsInfoValid, setStepsI
         setOptions(o)
     },[credentials]);
 
+    const getColSize = _ => {
+        return {
+            span: 4,
+            offset: 4
+        }
+    }
+
     useEffect(() => {
         if(credentialsValues.length > 0) {
             setStepsInfoValid({...stepsInfoValid, two: true});
@@ -25,16 +32,22 @@ export default function RegisterCredentials({ display, stepsInfoValid, setStepsI
     }, [credentialsValues]);
 
     return (
-        <Container className={`${!display ? 'd-none' : ''}`}>
-            Please confirm your credentials<br />
-            <Container className="w-50 mb-3">
-                <Select
-                    id="credselect"
-                    isMulti
-                    options={options}
-                    onChange={e => setCredentialsValues(e)}
-                />
-            </Container>
+        <Container className={`${!display ? 'd-none' : ''} mb-4`}>
+            <Row>
+                <Col lg={getColSize()} className="text-center fs-5 mb-3">
+                    Please confirm your credentials
+                </Col>
+            </Row>
+            <Row>
+                <Col lg={getColSize()}>
+                    <Select
+                        id="credselect"
+                        isMulti
+                        options={options}
+                        onChange={e => setCredentialsValues(e)}
+                    />
+                </Col>
+            </Row>
         </Container>
     );
 }

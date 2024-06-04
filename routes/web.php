@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
     
     Route::post('/admin/feedback', [AdminController::class, 'addRecipient']);
     Route::delete('/admin/feedback/{email?}', [AdminController::class, 'deleteRecipient']);
+    Route::post('/admin/credentials', [AdminController::class, 'addCredential']);
     Route::post('/admin', [AdminController::class, 'updateSettings']);
     Route::get('/admin', [AdminController::class, 'viewAdminPage']);
 });

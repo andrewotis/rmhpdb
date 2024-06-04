@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\AdminSetting;
+use App\Models\Credential;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
@@ -16,6 +17,7 @@ class AdminController extends Controller {
         return Inertia::render('Admin', [
             'auth' => Auth::user(),
             'settings' => AdminSetting::all(),
+            'credentials' => Credential::all(),
         ]);
     }
 
@@ -25,17 +27,18 @@ class AdminController extends Controller {
             'key' => 'email_address',
             'value' => $request->input('email')
         ]);
+    }
 
-        // do something after record is added
-
-
+    public function addCredential(Request $request) {
+        Credential::create([
+            'credential' => $request->input('credential'),
+            'description' => $request->input('description')
+        ]);
     }
 
     public function deleteRecipient($email) {
         $setting = AdminSetting::where('type', 'feedback_recipient')->where('key', 'email_address')->where('value', $email);
         $setting->delete();
-
-        // do something after record is deleted
     }
 
     public function updateSettings(Request $request) {

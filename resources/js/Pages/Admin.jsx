@@ -3,8 +3,9 @@ import Layout from "../Layouts/Layout";
 import { Container, Nav } from 'react-bootstrap';
 import AdminUserPrivacy from '../Components/AdminUserPrivacy';
 import AdminFeedbackSettings from '../Components/AdminFeedbackSettings';
+import AdminCredentials from '../Components/AdminCredentials';
 
-export default function Admin({ auth, settings }) {
+export default function Admin({ auth, settings, credentials }) {
     const [activeTab, setActiveTab] = useState('privacy');
 
     return (
@@ -18,7 +19,7 @@ export default function Admin({ auth, settings }) {
                         <Nav.Link onClick={() => setActiveTab('feedback')}>Feedback Settings</Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Nav.Link disabled onClick={() => setActiveTab('credentials')}>Credentials</Nav.Link>
+                        <Nav.Link onClick={() => setActiveTab('credentials')}>Credentials</Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
                         <Nav.Link disabled onClick={() => setActiveTab('sectors')}>Sectors</Nav.Link>
@@ -34,6 +35,10 @@ export default function Admin({ auth, settings }) {
                 <AdminFeedbackSettings
                     display={activeTab == 'feedback'}
                     settings={settings}
+                />
+                <AdminCredentials
+                    display={activeTab == 'credentials'}
+                    credentials={credentials}
                 />
             </Container>
         </Layout>

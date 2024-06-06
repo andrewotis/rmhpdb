@@ -113,7 +113,13 @@ class UserController extends Controller {
     }
 
     public function verifyToken($token) {
-        $token_record = RegistrationToken::where('token', $token)->first();
+        $token_record = RegistrationToken::where('token', $token)->get();
+
+        if($token_record->count() == 0) {
+            return redirect('/register')->withErrors(['error' => 'Invalid registration token. Please restart registration process.']);
+        } else {
+            $token_record = $token_record->first();
+        }
         
         $now = Carbon::now();
         $then = new Carbon($token_record->created_at);
@@ -198,6 +204,25 @@ class UserController extends Controller {
     public function checkEmail(Request $request) {
         $user = User::where('email', $request->input('email'))->get();
         return ($user->count() == 0) ? 1 : 0;
+    }
+
+    public function ideaTwo() {
+        $query = User::with('privacySettings')
+            ->with('credentials')
+            ->with('sectors')
+            ->with('categories')
+            ->where('active', 1)
+            ->where('type', 'registered_mhp');
+
+            $users = $this->hidePrivateFields($query->get()->toArray());
+
+            return Inertia::render('IdeaTwo', [
+                'auth' => Auth::user(),
+                'users' => $users,
+                'categories' => HazardCategory::all(),
+                'sectors' => Sector::all(),
+                'credentials' => Credential::all()
+            ]);
     }
 
     public function search(Request $request) {

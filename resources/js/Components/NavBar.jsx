@@ -1,5 +1,5 @@
 import { Form, Button, Nav, Container, Navbar, NavDropdown } from 'react-bootstrap';
-import { Link } from '@inertiajs/react'
+import { Link } from '@inertiajs/react';
 
 export default function NavBar({auth}) {
     return (

@@ -1,10 +1,18 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Layout from "../Layouts/Layout";
 import { prettifyDate } from '../tools';
 import { Table, Pagination, Row, Col, Form, Container } from 'react-bootstrap';
 
-export default function SearchResults({ auth, users, credentials, sectors, categories }) {
+export default function IdeaTwo({ auth, users, credentials, sectors, categories }) {
     const [sorted, setSorted] = useState(users);
+    const [filtered, setFiltered] = useState(users);
+    const [filterTerms, setFilterTerms] = useState({
+        first_name: '',
+        last_name: '',
+        city: '',
+        state: '',
+        country: ''
+    });
     const [currentPage, setCurrentPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(20);
 
@@ -40,8 +48,8 @@ export default function SearchResults({ auth, users, credentials, sectors, categ
     // pagination
     const indexOfLastRow = currentPage * rowsPerPage;
     const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-    const currentRows = sorted.slice(indexOfFirstRow, indexOfLastRow);
-    const numberOfPages = Math.trunc(sorted.length / rowsPerPage) + (sorted.length % rowsPerPage !== 0 ? 1 : 0); // total results divided by results per page
+    const currentRows = filtered.slice(indexOfFirstRow, indexOfLastRow);
+    const numberOfPages = Math.trunc(filtered.length / rowsPerPage) + (filtered.length % rowsPerPage !== 0 ? 1 : 0); // total results divided by results per page
 
     let items = [];
     for (let number = 1; number <= numberOfPages; number++) {
@@ -50,6 +58,29 @@ export default function SearchResults({ auth, users, credentials, sectors, categ
                 {number}
             </Pagination.Item>,
         );
+    }
+
+    useEffect(() => {
+        const arr = [...sorted].filter(row => {
+            return row.first_name.toLowerCase().includes(filterTerms.first_name.toLowerCase()) &&
+                row.last_name.toLowerCase().includes(filterTerms.last_name.toLowerCase()) &&
+                row.city.toLowerCase().includes(filterTerms.city.toLowerCase()) &&
+                row.state.toLowerCase().includes(filterTerms.state.toLowerCase()) &&
+                row.country.toLowerCase().includes(filterTerms.country.toLowerCase()) 
+        });
+        setFiltered(arr);
+    },[filterTerms]);
+
+    const handleFilter = e => {
+        const id = e.target.id.replace('search-', '');
+        setFilterTerms()
+        /*
+        const arr = [...sorted].filter(row => row[id].toLowerCase().includes(e.target.value.toLowerCase()));
+        const arr = [...sorted].filter(row => {
+            
+        });
+        setFiltered(arr);
+        */
     }
 
     return (
@@ -84,9 +115,32 @@ export default function SearchResults({ auth, users, credentials, sectors, categ
                     </Form.Select>
                 </Col>
             </Row>
-            
             <Table striped bordered hover size="sm">
                 <thead>
+                    <tr>
+                        <td colspan="11">
+                            <Row>
+                                <Col lg="2">
+                                    Filter Results:
+                                </Col>
+                                <Col lg="2">
+                                    <input onChange={(e) => setFilterTerms({...filterTerms, [e.target.id] : e.target.value})} placeholder="First Name" id="first_name" type="text" />
+                                </Col>
+                                <Col lg="2">
+                                    <input onChange={(e) => setFilterTerms({...filterTerms, [e.target.id] : e.target.value})} placeholder="Last Name" id="last_name" type="text" />
+                                </Col>
+                                <Col lg="2">
+                                    <input onChange={(e) => setFilterTerms({...filterTerms, [e.target.id] : e.target.value})} placeholder="City" id="city" type="text" />
+                                </Col>
+                                <Col lg="2">
+                                    <input onChange={(e) => setFilterTerms({...filterTerms, [e.target.id] : e.target.value})} placeholder="State" id="state" type="text" />
+                                </Col>
+                                <Col lg="2">
+                                    <input onChange={(e) => setFilterTerms({...filterTerms, [e.target.id] : e.target.value})} placeholder="Country" id="country" type="text" />
+                                </Col>
+                            </Row>
+                        </td>
+                    </tr>
                     <tr>
                         <th onClick={() => sortResults('first_name')}>First Name</th>
                         <th onClick={() => sortResults('last_name')}>Last Name</th>

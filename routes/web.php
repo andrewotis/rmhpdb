@@ -11,12 +11,21 @@ use App\Models\AdminSetting;
 use App\Models\Credential;
 use App\Models\HazardCategory;
 use App\Models\Sector;
+use App\Models\User;
 
 Route::get('/', function() {
     return Inertia::render('Index', [
         'auth' => Auth::user(),
     ]);
 });
+
+Route::get('/idea/1', function() {
+    return Inertia::render('IdeaOne', [
+        'auth' => Auth::user(),
+    ]);
+});
+
+Route::get('/idea/2', [UserController::class, 'ideaTwo']);
 
 Route::get('/contact', [FeedbackController::class, 'view']);
 Route::post('/contact', [FeedbackController::class, 'send']);

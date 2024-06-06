@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
 import { router, usePage } from '@inertiajs/react';
-import { Form, Button, Container, Col, Row, FloatingLabel, Alert } from 'react-bootstrap';
+import { Form, Button, Container, Col, Row, FloatingLabel } from 'react-bootstrap';
 import { validate } from 'email-validator';
+import AlertError from '../AlertError';
+import AlertSuccess from '../AlertSuccess';
 
 export default function RegisterPreRegister({}) {
     const { errors } = usePage().props;
@@ -48,24 +50,8 @@ export default function RegisterPreRegister({}) {
                     </Container>
                 </Col>
             </Row>
-            { errors.error && 
-                <Row>
-                    <Col lg={getColSize()}>
-                        <Alert variant='danger'>
-                            {errors.error}
-                        </Alert>
-                    </Col>
-                </Row>
-            }
-            { flash.message &&
-                <Row>
-                    <Col lg={getColSize()}>
-                        <Alert variant='success'>
-                            {flash.message}
-                        </Alert>
-                    </Col>
-                </Row>
-            }
+            <AlertError errors={errors} />
+            <AlertSuccess flash={flash} />
             <Row>
                 <Col lg={getColSize()}>
                     <FloatingLabel

@@ -34,11 +34,20 @@ class UserFactory extends Factory
             'state' => fake()->state(),
             'zip' => fake()->postcode(),
             'country' => fake()->country(),
-            'phone_number' => fake()->phoneNumber(),
+            'phone_number' => $this->phone(),
             'company' => fake()->company(),
             'registration_number' => 1,
             'password' => static::$password ??= Hash::make('password'),
         ];
+    }
+
+    protected function phone() {
+        $arr = [0,1,2,3,4,5,6,7,8,9];
+        $n = "";
+        for($c=0;$c<=10;$c++) {
+            $n .= $arr[rand(0,9)];
+        }
+        return "(" . substr($n, 0, 3) . ") " . substr($n, 4, 3) . "-" . substr($n, 7, 10);
     }
 
     /**

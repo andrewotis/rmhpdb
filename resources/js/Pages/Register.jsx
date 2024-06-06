@@ -3,19 +3,20 @@ import { router, usePage } from '@inertiajs/react';
 import { Form, Button, Container, Col, Row } from 'react-bootstrap';
 import Layout from '../Layouts/Layout';
 import { Stepper, Step } from 'react-form-stepper';
-import RegisterPreRegister from '../Components/RegisterPreRegister';
-import RegisterStepOne from '../Components/RegisterStepOne';
-import RegisterStepTwo from '../Components/RegisterStepTwo';
-import RegisterStepThree from '../Components/RegisterStepThree';
-import RegisterStepFour from '../Components/RegisterStepFour';
-import RegisterStepFive from '../Components/RegisterStepFive';
-import RegisterStepSix from '../Components/RegisterStepSix';
-import RegisterStepSeven from '../Components/RegisterStepSeven';
+import RegisterPreRegister from '../Components/Register/RegisterPreRegister';
+import RegisterStepOne from '../Components/Register/RegisterStepOne';
+import RegisterStepTwo from '../Components/Register/RegisterStepTwo';
+import RegisterStepThree from '../Components/Register/RegisterStepThree';
+import RegisterStepFour from '../Components/Register/RegisterStepFour';
+import RegisterStepFive from '../Components/Register/RegisterStepFive';
+import RegisterStepSix from '../Components/Register/RegisterStepSix';
+import RegisterStepSeven from '../Components/Register/RegisterStepSeven';
 import passwordValidator from 'password-validator';
+import AlertError from '../Components/AlertError';
 
 export default function Register({ auth, initial, tokenRecord, credentials, categories, sectors }) {
+    const { errors } = usePage().props
     const [activeStep, setActiveStep] = useState(0);
-    const [stepTwoValid, setStepTwoValid] = useState(false);
     const [schema, setSchema] = useState(null);
 
     useEffect(() => {
@@ -168,7 +169,7 @@ export default function Register({ auth, initial, tokenRecord, credentials, cate
                                         className="w-100"
                                         onClick={handleSubmit}
                                     >
-                                        Submit
+                                        Register
                                     </Button>
                                 }
                             </Col>

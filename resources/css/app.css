@@ -64,3 +64,25 @@ body {
   .font-weight-bold {
     font-weight: bold;
   }
+
+  .table td.fit, 
+  .table th.fit {
+   white-space: nowrap;
+   width: 1%;
+}
+
+.pagination {
+  margin-bottom: 0 !important;
+}
+
+.home-cards {
+  border: 3px solid #0d6efd;
+  border-radius: 25px;
+  padding: 14px;
+  text-align: center;
+  cursor: pointer;
+  color: #0d6efd;
+  font-weight: bold;
+  margin: 5px;
+  text-decoration: none;
+}

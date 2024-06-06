@@ -26,6 +26,19 @@ class DatabaseSeeder extends Seeder {
         $this->addSectors();
     }
 
+    public function addFeedbackRecipients() {
+        AdminSetting::create([
+            'type' => 'feedback_recipient',
+            'key' => 'email_address',
+            'value' => 'andrew.otis@gmail.com'
+        ]);
+        AdminSetting::create([
+            'type' => 'feedback_recipient',
+            'key' => 'email_address',
+            'value' => 'maternityprotection@gmail.com'
+        ]);
+    }
+
     public function addSectors() {
         $sectors = [
             [
@@ -142,6 +155,20 @@ class DatabaseSeeder extends Seeder {
             'phone_number' => '222-333-4444',
             'email' => "andrew.otis@gmail.com",
             'password' => Hash::make('password'),
+        ]);
+        User::create([
+            'first_name' => 'ted',
+            'last_name' => "rader",
+            'company' => 'admin',
+            'type' => 'admin',
+            'address' => '123 fake st',
+            'city' => 'springfield',
+            'state' => 'OH',
+            'zip' => '12345',
+            'country' => "USA",
+            'phone_number' => '222-333-4444',
+            'email' => "maternityprotection@gmail.com",
+            'password' => Hash::make('b3H34ltHy!'),
         ]);
     }
 

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Col, Row } from 'react-bootstrap';
 import Select from 'react-select';
 
-export default function RegisterSectors({ display, stepsInfoValid, setStepsInfoValid, sectorsValues, setSectorsValues, sectors }) {
+export default function RegisterStepFive({ values, setValues, display, sectors }) {
     const [options, setOptions] = useState([]);
 
     useEffect(() => {
@@ -16,23 +16,10 @@ export default function RegisterSectors({ display, stepsInfoValid, setStepsInfoV
         setOptions(o)
     },[sectors]);
 
-    useEffect(() => {
-        if(sectorsValues.length > 0) {
-            setStepsInfoValid({...stepsInfoValid, four: true});
-        } else {
-            setStepsInfoValid({...stepsInfoValid, four: false});
-        }
-    }, [sectorsValues]);
-
-    const getColSize = _ => {
-        return {
-            span: 4,
-            offset: 4
-        }
-    }
+    const getColSize = _ => ({ span: 4, offset: 4 })
 
     return (
-        <Container className={`${!display ? 'd-none' : ''} mb-4`}>
+        <Container className={`${!display ? 'd-none' : ''} mb-3`}>
             <Row>
                 <Col lg={getColSize()} className="text-center fs-5 mb-3">
                     Please indicate to which industry sector you are capable of making the assessment<br />
@@ -41,10 +28,10 @@ export default function RegisterSectors({ display, stepsInfoValid, setStepsInfoV
             <Row>
                 <Col lg={getColSize()}>
                     <Select
-                        id="sectors-select"
+                        id="categories-select"
                         isMulti
                         options={options}
-                        onChange={e => setSectorsValues(e)}
+                        onChange={e => setValues({...values, sectors: e})}
                     />
                 </Col>
             </Row>

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Col, Row } from 'react-bootstrap';
 import Select from 'react-select';
 
-export default function RegisterCategories({ display, stepsInfoValid, setStepsInfoValid, categoriesValues, setCategoriesValues, categories }) {
+export default function RegisterStepFour({ values, setValues, display, categories }) {
     const [options, setOptions] = useState([]);
 
     useEffect(() => {
@@ -16,23 +16,10 @@ export default function RegisterCategories({ display, stepsInfoValid, setStepsIn
         setOptions(o)
     }, [categories]);
 
-    const getColSize = _ => {
-        return {
-            span: 4,
-            offset: 4
-        }
-    }
-
-    useEffect(() => {
-        if(categoriesValues.length > 0) {
-            setStepsInfoValid({...stepsInfoValid, three: true});
-        } else {
-            setStepsInfoValid({...stepsInfoValid, three: false});
-        }
-    }, [categoriesValues]);
+    const getColSize = _ => ({ span: 4, offset: 4 })
 
     return (
-        <Container className={`${!display ? 'd-none' : ''} mb-4`}>
+        <Container className={`${!display ? 'd-none' : ''} mb-3`}>
             <Row>
                 <Col lg={getColSize()} className="text-center fs-5 mb-3">
                     Please confirm in which category (or categories) you are capapble of making the assessment<br />
@@ -44,7 +31,7 @@ export default function RegisterCategories({ display, stepsInfoValid, setStepsIn
                         id="categories-select"
                         isMulti
                         options={options}
-                        onChange={e => setCategoriesValues(e)}
+                        onChange={e => setValues({...values, categories: e})}
                     />
                 </Col>
             </Row>

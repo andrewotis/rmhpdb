@@ -56,7 +56,6 @@ class FeedbackController extends Controller {
         ];
 
         $recipients = $this->getRecipients();
-        // foreach($recipients as $recipient) {
             $body = [
                 'FromEmail' => "admin@andrew-otis.com",
                 'FromName' => "Administrator",
@@ -69,7 +68,6 @@ class FeedbackController extends Controller {
                     ['Email' => 'deletersoftware@gmail.com'],
                 ]
             ];
-        //}        
 
         $response = $mj->post(Resources::$Email, ['body' => $body]);
 

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Col, Row } from 'react-bootstrap';
 import Select from 'react-select';
 
-export default function RegisterCredentials({ display, stepsInfoValid, setStepsInfoValid, credentialsValues, setCredentialsValues, credentials }) {
+export default function RegisterStepThree({ values, setValues, display, credentials }) {
     const [options, setOptions] = useState([]);
 
     useEffect(() => {
@@ -10,7 +10,7 @@ export default function RegisterCredentials({ display, stepsInfoValid, setStepsI
         credentials.map(credential => {
             o.push({
                 value: credential.id,
-                label: `${credential.credential} - ${credential.description}`                
+                label: `${credential.credential} - ${credential.description}`
             });
         });
         setOptions(o)
@@ -23,16 +23,8 @@ export default function RegisterCredentials({ display, stepsInfoValid, setStepsI
         }
     }
 
-    useEffect(() => {
-        if(credentialsValues.length > 0) {
-            setStepsInfoValid({...stepsInfoValid, two: true});
-        } else {
-            setStepsInfoValid({...stepsInfoValid, two: false});
-        }
-    }, [credentialsValues]);
-
     return (
-        <Container className={`${!display ? 'd-none' : ''} mb-4`}>
+        <Container className={`${!display ? 'd-none' : ''} mb-3`}>
             <Row>
                 <Col lg={getColSize()} className="text-center fs-5 mb-3">
                     Please confirm your credentials
@@ -44,7 +36,7 @@ export default function RegisterCredentials({ display, stepsInfoValid, setStepsI
                         id="credselect"
                         isMulti
                         options={options}
-                        onChange={e => setCredentialsValues(e)}
+                        onChange={e => setValues({...values, credentials: e})}
                     />
                 </Col>
             </Row>

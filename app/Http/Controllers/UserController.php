@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\AdminSetting;
 use App\Models\HazardCategory;
 use App\Models\Sector;
+use App\Http\SendEmail;
+use App\Models\RegistrationToken;
+use Carbon\Carbon;
 
 class UserController extends Controller {
     public function update(Request $request) {
@@ -76,29 +79,84 @@ class UserController extends Controller {
         }
     }
 
+    public function register(Request $request) {
+        // first, make sure the email address isn't already registered
+        $user = User::where('email', $request->input('email'))->get();
+        if($user->count() > 0) {
+            return redirect('/register')->withErrors(['error' => 'This email address has already been taken.']);
+        }
+
+        // check to see if a token record already exists
+        $token_record = RegistrationToken::where('email', $request->input('email'))->get();
+
+        if($token_record->count() > 0) {
+            $token_record = $token_record->first();
+            $token_record->token =  md5($request->input('first_name') . ' ' . $request->input('last_name') . ' ' . $request->input('email') . time());
+            $token_record->created_at = Carbon::now();
+            $token_record->save();
+        } else {
+            // create the registration record
+            $token_record = RegistrationToken::create([
+                'first_name' => $request->input('first_name'),
+                'last_name' => $request->input('last_name'),
+                'email' => $request->input('email'),
+                'token' => md5($request->input('first_name') . ' ' . $request->input('last_name') . ' ' . $request->input('email') . time()),
+                'created_at' => Carbon::now()
+            ]);
+        }
+
+        if(SendEmail::verifyRegistration($token_record)) {
+            redirect('/register')->with(['message' => 'A verification email has been sent to ' . $request->input('email') . '. Please click the link in the email to verify.']);
+        } else {
+            return redirect('/register')->withErrors(['error' => 'There was a problem sending the email']);
+        }
+    }
+
+    public function verifyToken($token) {
+        $token_record = RegistrationToken::where('token', $token)->first();
+        
+        $now = Carbon::now();
+        $then = new Carbon($token_record->created_at);
+        
+        // how long has it been?
+        $diff = $then->diffInHours($now);
+        
+        if($diff > 12) {
+            return redirect('/register')->withErrors(['error' => 'Registration token has expired. Please send a new one below.']);
+        } else {
+            return Inertia::render('Register', [
+                'auth' => Auth::user(),
+                'initial' => false,
+                'tokenRecord' => $token_record,
+                'credentials' => Credential::all(),
+                'categories' => HazardCategory::all(),
+                'sectors' => Sector::all()
+            ]);
+        }
+    }
+
     public function store(Request $request) {
-        $account = $request->input('account');
+        $input = $request->input();
+        $token_record = RegistrationToken::where('token', $input['token'])->first();
+        $maxreg = User::max('registration_number');
         $credentials = $request->input('credentials');
         $categories = $request->input('categories');
         $sectors = $request->input('sectors');
-        
-        $maxreg = User::max('registration_number');
 
-        // create the user
         $user = User::create([
-            'first_name' => $account['first_name'],
-            'last_name' => $account['last_name'],
-            'address' => $account['address'],
-            'address2' => $account['address2'],
+            'first_name' => $token_record->first_name,
+            'last_name' => $token_record->last_name,
+            'address' => $input['address'],
+            'address2' => $input['address2'],
             'registration_number' => $maxreg + 1,
-            'city' => $account['city'],
-            'state' => $account['state'],
-            'zip' => $account['zip'],
-            'country' => $account['country'],
-            'company' => $account['company'],
-            'phone_number' => $account['phone_number'],
-            'email' => $account['email'],
-            'password' => Hash::make($account['password'])
+            'city' => $input['city'],
+            'state' => $input['state'],
+            'zip' => $input['zip'],
+            'country' => $input['country'],
+            'company' => $input['company'],
+            'phone_number' => $input['phone_number'],
+            'email' => $token_record->email,
+            'password' => Hash::make($input['password'])
         ]);
 
         // add creds
@@ -131,7 +189,10 @@ class UserController extends Controller {
             ]);
         }
 
-        return to_route('login');
+        // delete the registration token
+        $token_record->delete();
+
+        return redirect('/login')->with(['message' => 'Registration was successful. Please log in.']);
     }
 
     public function checkEmail(Request $request) {

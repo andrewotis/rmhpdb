@@ -11,13 +11,13 @@ return new class extends Migration {
             $table->string('type')->default('registered_mhp'); // registered MHP, admin, maybe more?
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('company');
-            $table->string('address');
+            $table->string('company')->nullable();
+            $table->string('address')->nullable();
             $table->string('address2')->nullable();
-            $table->string('city');
-            $table->string('state');
-            $table->string('zip');
-            $table->string('country');
+            $table->string('city')->nullable();
+            $table->string('state')->nullable();
+            $table->string('zip')->nullable();
+            $table->string('country')->nullable();
             $table->string('phone_number');
             $table->string('email')->unique();
             $table->integer('registration_number')->nullable();

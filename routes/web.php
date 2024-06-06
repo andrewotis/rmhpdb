@@ -53,12 +53,16 @@ Route::get('search', function() {
     ]);
 });
 
+Route::post('/register', [UserController::class, 'register']);
+
 Route::get('/register', function() {
     return Inertia::render('Register', [
         'auth' => Auth::user(),
+        'initial' => true,
         'credentials' => Credential::all(),
         'categories' => HazardCategory::all(),
         'sectors' => Sector::all()
     ]);
 });
 
+Route::get('/register/{token?}', [UserController::class, 'verifyToken']);

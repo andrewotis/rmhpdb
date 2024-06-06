@@ -1,142 +1,181 @@
-import { useState } from 'react'
-import { router, usePage } from '@inertiajs/react'
+import { useState, useEffect } from 'react';
+import { router, usePage } from '@inertiajs/react';
 import { Form, Button, Container, Col, Row } from 'react-bootstrap';
 import Layout from '../Layouts/Layout';
 import { Stepper, Step } from 'react-form-stepper';
-import RegisterAccountInfo from '../Components/RegisterAccountInfo';
-import RegisterCredentials from '../Components/RegisterCredentials';
-import RegisterCategories from '../Components/RegisterCategories';
-import RegisterSectors from '../Components/RegisterSectors';
+import RegisterPreRegister from '../Components/RegisterPreRegister';
+import RegisterStepOne from '../Components/RegisterStepOne';
+import RegisterStepTwo from '../Components/RegisterStepTwo';
+import RegisterStepThree from '../Components/RegisterStepThree';
+import RegisterStepFour from '../Components/RegisterStepFour';
+import RegisterStepFive from '../Components/RegisterStepFive';
+import RegisterStepSix from '../Components/RegisterStepSix';
+import RegisterStepSeven from '../Components/RegisterStepSeven';
+import passwordValidator from 'password-validator';
 
-export default function Register(props) {
+export default function Register({ auth, initial, tokenRecord, credentials, categories, sectors }) {
     const [activeStep, setActiveStep] = useState(0);
-    const [stepsInfoValid, setStepsInfoValid] = useState({
-        one: false,
-        two: false,
-        three: false,
-        four: false
+    const [stepTwoValid, setStepTwoValid] = useState(false);
+    const [schema, setSchema] = useState(null);
+
+    useEffect(() => {
+        createPasswordValidatorSchema();
+    },[]);
+
+    const createPasswordValidatorSchema = _ => {
+        var s = new passwordValidator();
+        s
+            .is().min(8)
+            .has().uppercase()
+            .has().lowercase()
+            .has().digits(1)
+            .has().not().spaces()
+        return setSchema(s);
+    }
+
+    const [values, setValues] = useState({
+        address: '',
+        address2: '',
+        city: '',
+        state: '',
+        zip: '',
+        country: '',
+        company: '',
+        phone_number: '',
+        credentials: [],
+        categories: [],
+        sectors: [],
+        password: '',
+        confirm_password: ''
     });
-    
-    const [accountInfoValues, setAccountInfoValues] = useState({
-        first_name: "",
-        last_name: "",
-        address: "",
-        address2: "",
-        city: "",
-        state: "",
-        zip: "",
-        country: "",
-        company: "",
-        phone_number: "",
-        email: "",
-        password: "",
-        password_confirmation: "",
-      });
 
-    const [credentialsValues, setCredentialsValues] = useState([]);
-    const [categoriesValues, setCategoriesValues] = useState({});
-    const [sectorsValues, setSectorsValues] = useState({});
+    const getColSize = _ => ({ span: 4, offset: 4 })
 
-    function handleSubmit(e) {
-        e.preventDefault();
-        router.post('/users', {
-            account: accountInfoValues,
-            credentials: credentialsValues,
-            categories: categoriesValues,
-            sectors: sectorsValues
-        });
+    if(initial) {
+        return (
+            <Layout auth={auth}>
+                <RegisterPreRegister />
+            </Layout>
+        );
+    }
+
+    const handleSubmit = _ => {
+        router.post('/users', {...values, token: tokenRecord.token});
     }
 
     return (
-        <>
-            <Layout auth={props.auth}>
-                <Form noValidate onSubmit={handleSubmit}>
-                    <Stepper 
-                        activeStep={activeStep}
-                        styleConfig={{
-                            activeBgColor: '#2b7cff',
-                            activeTextColor: '#fff',
-                            inactiveBgColor: '#fff',
-                            inactiveTextColor: '#2b7cff',
-                            completedBgColor: '#fff',
-                            completedTextColor: '#2b7cff',
-                            size: '3em'
-                        }}
-                        className={'stepper'}
-                        stepClassName={'stepper__step'}
-                    >
-                        <Step label="Account Info" />
-                        <Step label="Credentials" />
-                        <Step label="Categories" />
-                        <Step label="Industry Sector" />
-                    </Stepper>
-                    <Container>
-                        <RegisterAccountInfo
-                            display={activeStep==0}
-                            stepsInfoValid={stepsInfoValid}
-                            setStepsInfoValid={setStepsInfoValid}
-                            accountInfoValues={accountInfoValues}
-                            setAccountInfoValues={setAccountInfoValues}
-                        />
-                        <RegisterCredentials
-                            display={activeStep==1}
-                            stepsInfoValid={stepsInfoValid}
-                            setStepsInfoValid={setStepsInfoValid}
-                            credentialsValues={credentialsValues}
-                            setCredentialsValues={setCredentialsValues}
-                            credentials={props.credentials}
-                        />
-                        <RegisterCategories
-                            display={activeStep==2}
-                            stepsInfoValid={stepsInfoValid}
-                            setStepsInfoValid={setStepsInfoValid}
-                            categoriesValues={categoriesValues}
-                            setCategoriesValues={setCategoriesValues}
-                            categories={props.categories}
-                        />
-                        <RegisterSectors
-                            display={activeStep==3}
-                            stepsInfoValid={stepsInfoValid}
-                            setStepsInfoValid={setStepsInfoValid}
-                            sectorsValues={sectorsValues}
-                            setSectorsValues={setSectorsValues}
-                            sectors={props.sectors}
-                        />
+        <Layout auth={auth}>
+            <Container className="text-center">
+                Registration for { tokenRecord.first_name } { tokenRecord.last_name } - { tokenRecord.email }<br />
+            </Container>
+            <Stepper 
+                activeStep={activeStep}
+                styleConfig={{
+                    activeBgColor: '#2b7cff',
+                    activeTextColor: '#fff',
+                    inactiveBgColor: '#fff',
+                    inactiveTextColor: '#2b7cff',
+                    completedBgColor: '#fff',
+                    completedTextColor: '#2b7cff',
+                    size: '1.7em'
+                }}
+                className={'stepper'}
+                stepClassName={'stepper__step'}
+            >
+                <Step label="" />
+                <Step label="" />
+                <Step label="" />
+                <Step label="" />
+                <Step label="" />
+                <Step label="" />
+                <Step label="" />
+            </Stepper>
+            <RegisterStepOne
+                values={values}
+                setValues={setValues}
+                display={activeStep==0}
+            />
+            <RegisterStepTwo
+                values={values}
+                setValues={setValues}
+                display={activeStep==1}
+            />
+            <RegisterStepThree
+                values={values}
+                setValues={setValues}
+                display={activeStep==2}
+                credentials={credentials}
+            />
+            <RegisterStepFour
+                values={values}
+                setValues={setValues}
+                display={activeStep==3}
+                categories={categories}
+            />
+            <RegisterStepFive
+                values={values}
+                setValues={setValues}
+                display={activeStep==4}
+                sectors={sectors}
+            />
+            <RegisterStepSix
+                values={values}
+                setValues={setValues}
+                display={activeStep==5}
+                errors={schema && schema.validate(values.password, {details: true})}
+            />
+            <RegisterStepSeven
+                values={values}
+                display={activeStep==6}
+                tokenRecord={tokenRecord}
+            />
+
+            <Container>
+                <Row>
+                    <Col lg={getColSize()}>
                         <Row>
-                        <Col sm={{ span: 4, offset: 4 }} className="text-center">
-                            <Button 
-                                className="w-25 m-1"
-                                disabled={activeStep == 0}
-                                onClick={() => setActiveStep(activeStep-1)}
-                                variant="outline-primary"
-                            >
-                                Back
-                            </Button>
-                            <Button 
-                                className={`${activeStep==3 ? 'd-none' : ''} w-25 m-1`}
-                                onClick={
-                                    () => activeStep < 3 && setActiveStep(activeStep+1)
+                            <Col>
+                                <Button 
+                                    variant="outline-primary" 
+                                    className="w-100"
+                                    onClick={() => setActiveStep(activeStep-1)}
+                                    disabled={activeStep==0}
+                                >
+                                    Back
+                                </Button>
+                            </Col>
+                            <Col>
+                                { 
+                                    activeStep < 6 &&
+                                    <Button 
+                                        className="w-100"
+                                        onClick={() => setActiveStep(activeStep+1)}
+                                        disabled={
+                                            (activeStep==1 && values.phone_number.replace(/[^0-9]/g, '').length < 10) ||
+                                            (activeStep==2 && values.credentials.length == 0) ||
+                                            (activeStep==3 && values.categories.length == 0) ||
+                                            (activeStep==4 && values.sectors.length == 0) ||
+                                            (activeStep==5 && !schema.validate(values.password)) ||
+                                            (activeStep==5 && values.password !== values.confirm_password)
+                                        }
+                                    >
+                                        {activeStep < 5 ? 'Next' : 'Review'}
+                                    </Button>
                                 }
-                                disabled={
-                                    (activeStep==0 && stepsInfoValid.one == false) ||
-                                    (activeStep==1 && stepsInfoValid.two == false) ||
-                                    (activeStep==2 && stepsInfoValid.three == false) 
+                                {
+                                    activeStep == 6 &&
+                                    <Button
+                                        className="w-100"
+                                        onClick={handleSubmit}
+                                    >
+                                        Submit
+                                    </Button>
                                 }
-                            >
-                                Next
-                            </Button>
-                            <Button
-                                className={`${activeStep!=3 ? 'd-none' : ''} w-25 m-1`}
-                                onClick={handleSubmit}
-                                disabled={activeStep==3 && stepsInfoValid.four == false}
-                            >
-                                Register
-                            </Button>
-                        </Col>
+                            </Col>
                         </Row>
-                    </Container>
-                </Form>
-            </Layout>
-        </>
-    )
+                    </Col>
+                </Row>
+            </Container>
+        </Layout>
+    );
 }

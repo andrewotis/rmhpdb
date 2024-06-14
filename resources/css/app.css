@@ -86,3 +86,43 @@ body {
   margin: 5px;
   text-decoration: none;
 }
+
+.color1 {
+  color: #e55fff !important;
+}
+
+.color2 {
+  color: #471954 !important;
+}
+
+.color3 {
+  color: #f6b932 !important;
+}
+
+.color4 {
+  color: #fcdb32 !important;
+}
+
+.color5 {
+  color: #0049fb !important;
+}
+
+#layout3-nav-container .navbar-brand, .nav-link {
+  color: #471954 !important;
+}
+
+#layout3-nav-container .nav-link {
+  margin-left: 1.25em;
+}
+
+#layout3-content-container {
+  height: 100vh;
+  width: 100%;
+  background-color: #dadada;
+}
+
+.layout3-bar {
+  background-color: #a38ca9;
+  color: #fff;
+  text-align: center;
+}

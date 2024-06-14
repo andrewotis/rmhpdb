@@ -45,7 +45,7 @@ class UserController extends Controller {
                 'email' => $data['email'],
             ]);
 
-            redirect('/account')->with(['message' => 'Successfully updated account info!']);
+            return redirect('/account')->with(['message' => 'Successfully updated account info!']);
         }
 
         // password update:
@@ -75,7 +75,7 @@ class UserController extends Controller {
                     'value' => 'true'
                 ]);
             }
-            redirect('/account')->with(['message' => 'Successfully updated privacy settings!']);
+            return redirect('/account')->with(['message' => 'Successfully updated privacy settings!']);
         }
     }
 
@@ -225,6 +225,45 @@ class UserController extends Controller {
             ]);
     }
 
+    public function browse() {
+        $query = User::with('privacySettings')
+            ->with('credentials')
+            ->with('sectors')
+            ->with('categories')
+            ->where('active', 1)
+            ->where('type', 'registered_mhp');
+
+            $users = $this->hidePrivateFields($query->get()->toArray());
+
+            return Inertia::render('Database', [
+                'auth' => Auth::user(),
+                'users' => $users,
+                'categories' => HazardCategory::all(),
+                'sectors' => Sector::all(),
+                'credentials' => Credential::all()
+            ]);
+    }
+
+    public function viewSearch() {
+        // build arrays of distinct countries, cities, states
+        $users = User::where('type', 'registered_mhp')->where('active', 1)->get();
+        $countries = [];
+        $cities = [];
+        $states = [];
+        foreach($users as $user) {
+            $countries[] = $user->country;
+            $cities[] = $user->city;
+            $states[] = $user->state;
+        }
+
+        return Inertia::render('Search', [
+            'auth' => Auth::user(),
+            'countries' => array_unique($countries),
+            'cities' => array_unique($cities),
+            'states' => array_unique($states)
+        ]);
+    }
+
     public function search(Request $request) {
         $query = User::with('privacySettings')
             ->with('credentials')
@@ -250,14 +289,18 @@ class UserController extends Controller {
         }
         
         $users = $this->hidePrivateFields($query->get()->toArray());
-        
-        return Inertia::render('SearchResults', [
-            'auth' => Auth::user(),
-            'users' => $users,
-            'categories' => HazardCategory::all(),
-            'sectors' => Sector::all(),
-            'credentials' => Credential::all()
-        ]);
+
+        if(count($users) == 0) {
+            return redirect('/search')->with(['message' => 'No results found. Please try your search again.']);
+        } else {
+            return Inertia::render('Database', [
+                'auth' => Auth::user(),
+                'users' => $users,
+                'categories' => HazardCategory::all(),
+                'sectors' => Sector::all(),
+                'credentials' => Credential::all()
+            ]);
+        }
     }
 
     protected function hidePrivateFields($users) {

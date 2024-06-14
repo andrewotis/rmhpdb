@@ -1,0 +1,561 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+.header {
+    min-height: 100vh;
+    width: 100%;
+    background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url("/img/home-background.jpg");
+    background-position: center;
+    background-size: cover;
+    position: relative;
+}
+
+/*                                                      nav section */
+nav {
+    display: flex;
+    padding: 2% 6%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-links {
+    flex: 1;
+    text-align: right;
+}
+
+.nav-links ul {
+    margin-bottom: initial;
+}
+
+.nav-links ul li {
+    list-style: none;
+    display: inline-block;
+    padding: 8px 12px;
+    position: relative;
+}
+
+.nav-links ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.nav-links ul li::after {
+    content: '';
+    width: 0%;
+    height: 2px;
+    background: #f6b932;
+    display: block;
+    margin: auto;
+    transition: 0.5s;
+}
+
+.nav-links ul li:hover::after {
+    width: 100%;
+}
+
+nav .fa-rm {
+    display: none;
+}
+
+.nav-logo-text {
+    font-size: 28px;
+    color: #fff;
+}
+
+.text-box {
+    width: 90%;
+    color: #fff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.text-box h1 {
+    font-size: 44px;
+}
+
+.text-box p {
+    margin: 10px 0 20px;
+    font-size: 14px;
+    color: #fff;
+}
+
+.register-subsection {
+    background: rgba(0, 0, 0, 0.35);
+    max-width: 380px;
+    margin: auto;
+    margin-top: 2em;
+    padding: 2em;
+}
+
+.register-subsection input {
+    margin-bottom: 10px;
+    background: rgba(255, 255, 255, 0.25);
+}
+.register-subsection input::placeholder {
+    color: #000;
+}
+
+.hero-btn {
+    display: inline-block;
+    text-decoration: none;
+    color: #fff;
+    border: 1px solid #fff;
+    padding: 12px 34px;
+    font-size: 13px;
+    background: transparent;
+    position: relative;
+    cursor: pointer;
+    margin: 5px;
+    width: 185px;
+    text-align: center;
+}
+
+.hero-btn:hover {
+    border: 1px solid #f6b932;
+    background: #f6b932;
+    transition: 1s;
+}
+
+.hero-btn-filled {
+    display: inline-block;
+    text-decoration: none;
+    color: #fff;
+    padding: 12px 34px;
+    background: #f6b932;
+    font-size: 13px;
+    position: relative;
+    cursor: pointer;
+    margin: 5px;
+    width: 185px;
+    text-align: center;
+}
+
+.hero-btn-filled:hover:not(.disabled){
+    color: #fff;
+    background: #0049fb;
+    transition: 1s;
+}
+
+/*                                                      registration section */
+
+.registration-container {
+    width: 100%;
+    max-width: 768px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 2rem 1.5rem;
+    background-color: #f2f2f2;
+    margin: auto;
+}
+
+.registration-container .hero-btn-filled {
+    float: right;
+}
+
+@media(max-width: 768px) {
+    .registration-container {
+        margin-top: 0;
+    }
+    .registration-container .hero-btn-filled {
+        float: initial;
+        display: block;
+        margin: auto;
+    }
+}
+
+@media(min-width: 768px) {
+    .registration-container {
+        flex-direction: row;
+        align-items: center;
+        border-radius: 10px;
+    }
+    .cta-form {
+        margin-bottom: 0;
+        margin-right: 2rem;
+        text-align: left;
+    }
+    .cta-form h2 {
+        text-align: left;
+        margin: 0;
+    }
+    .registration-form input {
+        width: clamp(120px, 35vw, 420px);
+    }
+}
+
+.cta-form {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.cta-form h2 {
+    font-size: 1.5rem;
+    width: 100%;
+    max-width: 25ch;
+    margin: 0 auto;
+    text-align: center;
+}
+        
+.cta-form p {
+    margin-top: 1rem;
+    font-size: 1rem;
+    width: 100%;
+    max-width: 24ch;
+}
+
+.registration-form {
+    align-self: center;
+}
+
+.registration-form input, .registration-form textarea {
+    width: clamp(120px, 50vw, 420px);
+    height: 2.5rem;
+    padding: 0 1.25rem;
+    border: 1px solid #000;
+    border-radius: 2px;
+    margin: 0.625rem auto;
+    transition: all 250ms;
+}
+
+.registration-form input:focus, .registration-form textarea:focus {
+    outline: none;
+    border-top-color: rgba(0,0,0,0.1);
+}
+
+.registration-form input:focus + .form__label{
+    transform: translateY(-4.50rem) scale(1);
+    color: #000;
+}
+
+.registration-form textarea:focus + .form__label{
+    transform: translateY(-4.50rem) scale(1);
+    color: #000;
+}
+
+.registration-form input:focus + .form__label, .registration-form input:not(:placeholder-shown) + .form__label {
+    transform: translateY(-4.50rem) scale(1);
+    color: #000;
+}
+
+.registration-form textarea:focus + .form__label, .registration-form textarea:not(:placeholder-shown) + .form__label {
+    transform: translateY(-8.7rem) scale(1);
+    color: #000;
+}
+
+.registration-form textarea:placeholder-shown + .form__label{
+    margin-top: -5px;
+}
+
+.registration-form textarea {
+    padding-top: 10px;
+}
+
+.registration-form input::placeholder, .registration-form textarea::placeholder {
+    display: none;
+    color: transparent;        
+/* Prevents users from highlighting the placeholder. */
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+
+.registration-form textarea {
+    height: 100px;
+}
+
+.registration-form input:not(:placeholder-shown) {
+    border-top-color: rgba(0, 0, 0, 0.5);
+}
+
+.registration-form textarea:not(:placeholder-shown) {
+    border-top-color: rgba(0, 0, 0, 0.5);
+}
+
+.registration-form .form__label {
+    font-size: 1rem;
+    color: #ccc;
+    display: block;
+    transform: translate(1.25rem,-2.5rem);
+    transform-origin: 0 0; /* Used later for transitions */
+    transition: all 500ms;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+    pointer-events: none; 
+}
+
+/*                                                      layout 4 stuff */
+.sub-header {
+    height: 35vh;
+    width: 100%;
+    background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url("/img/Fotolia_3963810_Subscription_L.jpg");
+    background-position: center;
+    background-size: cover;
+    text-align: center;
+    color: #fff;
+}
+
+.sub-header h1 {
+    margin-top: 25px;
+    @media(max-width: 700px) {
+        margin-top: 70px;
+    }
+}
+
+
+
+
+/*                                                      utilities */
+.float-right {
+    float: right;
+}
+
+.no-padding {
+    padding: 0px !important;
+}
+
+.text-align-left {
+    text-align: left;
+}
+
+.text-align-right {
+    text-align: right;
+}
+
+.position-absolute {
+    position: absolute;
+}
+
+.right-4px {
+    right: 4px;
+}
+
+.left-4px {
+    left: 4px;
+}
+
+.padding-left-4px {
+    padding-left: 4px;
+}
+
+
+/*                                                      icons */
+
+.fa-heartbeat {
+    color: #f6b932;
+    margin: 10px;
+}
+
+@media(max-width: 1024px) {
+    .register {
+        width: 80% !important;
+    }
+    .registration-row {
+        flex-direction: column;
+    }
+}
+
+@media(max-width: 700px) {
+    .text-box h1 {
+        font-size: 20px;
+    }
+    .nav-links ul li {
+        display: block;
+    }
+    .nav-links {
+        position: absolute;
+        background: #471954;
+        height: 100vh;
+        width: 200px;
+        top: 0;
+        right: -200px;
+        text-align: left;
+        z-index: 2;
+        transition: 1s;
+    }
+    nav .fa-rm {
+        display: block;
+        color: #fff;
+        margin: 10px;
+        font-size: 22px;
+        cursor: pointer;
+    }
+    .nav-links ul {
+        padding: 30px;
+    }
+}
+
+.register {
+    width: 40%;
+    margin: auto;
+    text-align: center;
+    padding-top: 100px;
+}
+
+.register h1 {
+    font-size: 36px;
+    font-weight: 600;
+}
+
+.register p {
+    color: #777;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 22px;
+    padding: 10px
+}
+
+.registration-row {
+    margin-top: 2%;
+    display: flex;
+    justify-content: space-between;
+    background: #fff3f3;
+}
+
+.registration-col {
+    flex-basis: 31%;
+    border-radius: 10px;
+    margin-bottom: 5%;
+    padding: 20px 12px;
+    box-sizing: border-box;
+}
+
+.main-content {
+    padding-top: 2rem;
+    min-height: calc(100vh - 35vh - 30px);
+    @media(max-width: 768px) {
+        padding-top: 0;
+    }
+}
+
+.home-main-content {
+    padding-top: 2rem;
+    @media(max-width: 768px) {
+        padding-top: 0;
+    }
+}
+
+.footer {
+    text-align: center;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 8pt;
+}
+
+.disabled {
+    opacity: 0.5;
+    cursor: default !important;
+}
+
+.hyde {
+    display: none !important;
+}
+
+/*                                                      database table */
+
+.database-table {
+    align-items: top;
+    vertical-align: top;
+    width: 100%;
+}
+
+.database-table tr:nth-child(odd) {
+    background-color: #ccc;
+}
+
+.database-table td, th {
+    padding: 2px;
+    font-size: 9pt;
+    vertical-align: top;
+    white-space: nowrap;
+}
+
+.database-table th {
+    position: sticky;
+    top: 0;
+    background: #fff;
+}
+
+.database-table-wrapper {
+    height: calc(100vh - 35vh - 30px - 60px);           /* header - main content div - footer - controls */
+    min-height: calc(100vh - 35vh - 30px - 60px);
+    overflow: scroll;
+    width: 100%;
+}
+
+.database-table-controls {
+    font-size: 10pt;
+    height: 30px;
+}
+
+.database-table-controls .col {
+    background-color: #f6b932;
+    float: left;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.pagination {
+    display: inline-block;
+}
+
+.pagination a {
+    cursor: pointer;
+    color: #000;
+    float: left;
+    padding: 3px 6px;
+    text-decoration: none;
+    transition: background-color .3s;
+    border: 1px solid #000;
+    background-color: #fff;
+    font-size: 8pt;
+    border-radius: 2px;
+}
+
+.pagination .active {
+    background-color: #f6b932;
+}
+
+.flash {
+    margin: auto;
+    text-align: center;
+    padding: 10px;
+}
+
+.success {
+    color: #355E3B;
+}
+
+.error {
+    color: #880808;
+}
+
+
+/*
+@media (max-width:768px) {
+    .database-table-controls .col {
+        width: 100%
+    }
+    .database-table-wrapper {
+        height: calc(100vh - 35vh - 40px - 150px);
+        min-height: calc(100vh - 35vh - 40px - 150px);
+    }
+}
+*/

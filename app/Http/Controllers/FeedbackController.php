@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 
 class FeedbackController extends Controller {
     public function view() {
-        return Inertia::render('ContactForm', [
+        return Inertia::render('NewContact', [
             'auth' => Auth::user(),
         ]);
     }

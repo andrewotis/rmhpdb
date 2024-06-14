@@ -14,13 +14,27 @@ use App\Models\Sector;
 use App\Models\User;
 
 Route::get('/', function() {
-    return Inertia::render('Index', [
+    return Inertia::render('Home', [
         'auth' => Auth::user(),
     ]);
 });
 
+Route::get('/database', [UserController::class, 'browse']);
+
 Route::get('/idea/1', function() {
     return Inertia::render('IdeaOne', [
+        'auth' => Auth::user(),
+    ]);
+});
+
+Route::get('/layout', function() {
+    return Inertia::render('Home', [
+        'auth' => Auth::user(),
+    ]);
+});
+
+Route::get('/test', function() {
+    return Inertia::render('Test', [
         'auth' => Auth::user(),
     ]);
 });
@@ -56,11 +70,7 @@ Route::get('logout', [LoginController::class, 'logout']);
 Route::post('login', [LoginController::class, 'authenticate']);
 
 Route::post('search', [UserController::class, 'search']);
-Route::get('search', function() {
-    return Inertia::render('Index', [
-        'auth' => Auth::user(),
-    ]);
-});
+Route::get('search', [UserController::class, 'viewSearch']);
 
 Route::post('/register', [UserController::class, 'register']);
 

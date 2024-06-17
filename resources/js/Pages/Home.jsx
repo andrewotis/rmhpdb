@@ -1,5 +1,5 @@
-
-import { Link } from '@inertiajs/react';
+import { useEffect } from 'react';
+import { Link, usePage } from '@inertiajs/react';
 import RegisterSection from "../Components/RegisterSection";
 import Footer from "../Components/Footer";
 import Nav from "../Components/Nav";

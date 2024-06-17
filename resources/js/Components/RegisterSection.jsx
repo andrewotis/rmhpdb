@@ -1,21 +1,50 @@
-import { useState } from "react";
-import Button from "./Button";
+import { useState, useEffect, useRef } from "react";
 import { validate } from 'email-validator';
+import { router, usePage } from '@inertiajs/react';
+import Button from "./Button";
+import Flash from "./Flash";
 
 export default function RegisterSection({ children }) {
+    const { errors } = usePage().props;
+    const { flash } = usePage().props;
+
     const [values, setValues] = useState({
-        firstName: '',
-        lastName: '',
+        first_name: '',
+        last_name: '',
         email: ''
     });
+
+    useEffect(() => {
+        if(errors.error || flash.message) {
+            window.setTimeout( () => {
+                document.querySelector('#registration').scrollIntoView();
+            }, 1000);   
+        }
+    },[errors,flash]);
 
     const handleChange = e => {
         setValues({...values, [e.target.id] : e.target.value});
     }
 
+    const valid = _ => {
+        return values.first_name.length > 0
+            && values.last_name.length > 0
+                && validate(values.email);
+    }
+
+    const handleSubmit = _ => {
+        router.post('/register', values);
+    }
+
     return (
         <>
-            <div className="registration-container">
+            { flash.message && <Flash type="success" message={flash.message}/> }
+            { errors.error && <Flash type="error" message={errors.error}/> }
+
+            <div 
+                className="registration-container" 
+                id="registration"
+            >
                 <div className="cta-form">
                     <h2>Register</h2>
                     <p>Get started today by filling out the following form.</p>
@@ -25,20 +54,20 @@ export default function RegisterSection({ children }) {
                         type="text" 
                         placeholder="First Name" 
                         className="form__input" 
-                        id="firstName" 
-                        value={values.firstName}
+                        id="first_name" 
+                        value={values.first_name}
                         onChange={handleChange}
                     />
-                    <label htmlFor="firstName" className="form__label">First Name</label>
+                    <label htmlFor="first_name" className="form__label">First Name</label>
                     <input 
                         type="text" 
                         placeholder="Last Name" 
                         className="form__input" 
-                        id="lastName"
-                        value={values.lastName}
+                        id="last_name"
+                        value={values.last_name}
                         onChange={handleChange}
                     />
-                    <label htmlFor="lastName" className="form__label">Last Name</label>
+                    <label htmlFor="last_name" className="form__label">Last Name</label>
                     <input 
                         type="text" 
                         placeholder="Email Address" 
@@ -50,7 +79,8 @@ export default function RegisterSection({ children }) {
                     <label htmlFor="email" className="form__label">Email Address</label>
                     <Button 
                         filled
-                        disabled={values.firstName.length == 0 || values.lastName.length == 0 || !validate(values.email)}
+                        disabled={!valid()}
+                        onClick={valid() ? () => handleSubmit() : undefined}
                     >
                         Register
                     </Button>

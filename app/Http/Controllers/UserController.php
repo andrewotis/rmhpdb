@@ -17,6 +17,7 @@ use App\Models\Sector;
 use App\Http\SendEmail;
 use App\Models\RegistrationToken;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Redirect;
 
 class UserController extends Controller {
     public function update(Request $request) {
@@ -79,11 +80,11 @@ class UserController extends Controller {
         }
     }
 
-    public function register(Request $request) {
+    public function register(Request $request) { 
         // first, make sure the email address isn't already registered
         $user = User::where('email', $request->input('email'))->get();
         if($user->count() > 0) {
-            return redirect('/register')->withErrors(['error' => 'This email address has already been taken.']);
+            return redirect('/')->withErrors(['error' => 'This email address has already been taken.']);
         }
 
         // check to see if a token record already exists
@@ -106,9 +107,9 @@ class UserController extends Controller {
         }
 
         if(SendEmail::verifyRegistration($token_record)) {
-            redirect('/register')->with(['message' => 'A verification email has been sent to ' . $request->input('email') . '. Please click the link in the email to verify.']);
+            redirect('/')->with(['message' => 'A verification email has been sent to ' . $request->input('email') . '. Please click the link in the email to verify.']);
         } else {
-            return redirect('/register')->withErrors(['error' => 'There was a problem sending the email']);
+            return redirect('/')->withErrors(['error' => 'There was a problem sending the email']);
         }
     }
 
@@ -116,7 +117,7 @@ class UserController extends Controller {
         $token_record = RegistrationToken::where('token', $token)->get();
 
         if($token_record->count() == 0) {
-            return redirect('/register')->withErrors(['error' => 'Invalid registration token. Please restart registration process.']);
+            return redirect('/')->withErrors(['error' => 'Invalid registration token. Please restart registration process.']);
         } else {
             $token_record = $token_record->first();
         }
@@ -128,9 +129,9 @@ class UserController extends Controller {
         $diff = $then->diffInHours($now);
         
         if($diff > 12) {
-            return redirect('/register')->withErrors(['error' => 'Registration token has expired. Please send a new one below.']);
+            return redirect('/')->withErrors(['error' => 'Registration token has expired. Please restart your registration.']);
         } else {
-            return Inertia::render('Register', [
+            return Inertia::render('NewRegister', [
                 'auth' => Auth::user(),
                 'initial' => false,
                 'tokenRecord' => $token_record,

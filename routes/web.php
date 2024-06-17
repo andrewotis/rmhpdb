@@ -11,7 +11,6 @@ use App\Models\AdminSetting;
 use App\Models\Credential;
 use App\Models\HazardCategory;
 use App\Models\Sector;
-use App\Models\User;
 
 Route::get('/', function() {
     return Inertia::render('Home', [
@@ -29,12 +28,6 @@ Route::get('/idea/1', function() {
 
 Route::get('/layout', function() {
     return Inertia::render('Home', [
-        'auth' => Auth::user(),
-    ]);
-});
-
-Route::get('/test', function() {
-    return Inertia::render('Test', [
         'auth' => Auth::user(),
     ]);
 });
@@ -77,7 +70,6 @@ Route::post('/register', [UserController::class, 'register']);
 Route::get('/register', function() {
     return Inertia::render('Register', [
         'auth' => Auth::user(),
-        'initial' => true,
         'credentials' => Credential::all(),
         'categories' => HazardCategory::all(),
         'sectors' => Sector::all()

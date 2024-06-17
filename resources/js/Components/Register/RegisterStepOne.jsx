@@ -84,10 +84,6 @@ export default function RegisterStepOne({ values, setValues, display }) {
                         <option value="">Country</option>
                         <option value="US">United States</option>
                         { Country.getAllCountries().filter(c => c.name !== 'United States').map(c => <option key={c.isoCode} value={c.isoCode}>{c.name}</option>) }
-                        
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
                     </Form.Select>
                 </Col>
             </Row>

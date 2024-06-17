@@ -12,6 +12,7 @@ body {
     min-height: 100vh;
     width: 100%;
     background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url("/img/home-background.jpg");
+    /* background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url("http://localhost:8000/img/home-background.jpg"); */
     background-position: center;
     background-size: cover;
     position: relative;
@@ -147,6 +148,12 @@ nav .fa-rm {
     transition: 1s;
 }
 
+.reg-form-controls .hero-btn-filled {
+    width: unset;
+    float: initial;
+    margin: 3px;
+}
+
 /*                                                      registration section */
 
 .registration-container {
@@ -174,6 +181,10 @@ nav .fa-rm {
         display: block;
         margin: auto;
     }
+
+    .reg-form-controls .hero-btn-filled {
+        display: initial;
+    }
 }
 
 @media(min-width: 768px) {
@@ -191,9 +202,10 @@ nav .fa-rm {
         text-align: left;
         margin: 0;
     }
-    .registration-form input {
+    .registration-form input, .registration-form select {
         width: clamp(120px, 35vw, 420px);
     }
+
 }
 
 .cta-form {
@@ -227,6 +239,17 @@ nav .fa-rm {
     border: 1px solid #000;
     border-radius: 2px;
     margin: 0.625rem auto;
+    transition: all 250ms;
+}
+
+.registration-form select {
+    width: clamp(120px, 50vw, 420px);
+    height: 2.5rem;
+    padding: 0 0.9rem;
+    border: 1px solid #000;
+    border-radius: 2px;
+    /*margin: 0.625rem auto;*/
+    margin-top: 2.9rem;
     transition: all 250ms;
 }
 
@@ -302,6 +325,7 @@ nav .fa-rm {
     height: 35vh;
     width: 100%;
     background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url("/img/Fotolia_3963810_Subscription_L.jpg");
+    /* background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url("http://localhost:8000/img/Fotolia_3963810_Subscription_L.jpg");*/
     background-position: center;
     background-size: cover;
     text-align: center;
@@ -335,6 +359,10 @@ nav .fa-rm {
     text-align: right;
 }
 
+.text-align-center {
+    text-align: center;
+}
+
 .position-absolute {
     position: absolute;
 }
@@ -349,6 +377,22 @@ nav .fa-rm {
 
 .padding-left-4px {
     padding-left: 4px;
+}
+
+.padding-20px {
+    padding: 20px;
+}
+
+.margin-20px {
+    margin: 20px;
+}
+
+.display-none {
+    display: none;
+}
+
+.font-weight-bold {
+    font-weight: bold;
 }
 
 
@@ -546,6 +590,24 @@ nav .fa-rm {
 .error {
     color: #880808;
 }
+
+/*                                     progress bar */
+.progress-container { 
+    background-color: rgb(192, 192, 192); 
+    width: 100%;
+    height: 30px;
+} 
+
+.progress-done { 
+    background-color: rgb(116, 194, 92); 
+    color: white;  
+    text-align: right; 
+    font-size: 20px; 
+    transition: 1s;
+    height: 30px;
+    line-height:30px;
+    padding-right: 5px;
+} 
 
 
 /*

@@ -30,7 +30,8 @@
         color: $white;
         width: 100% !important;
         border-radius: 0 !important;
-        background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url("http://localhost:8000/img/shutterstock_2077106.jpg");
+        /*background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url("http://localhost:8000/img/shutterstock_2077106.jpg");*/
+        background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url("/img/shutterstock_2077106.jpg");
         background-size: cover;
         h1 {            
             font-size: 20pt;

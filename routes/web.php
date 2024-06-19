@@ -61,13 +61,12 @@ Route::post('/database/search', [UserController::class, 'search']);
 Route::get('/database/search', [UserController::class, 'viewSearch']);
 Route::get('/database', [UserController::class, 'browse']);
 
-Route::post('/register', [UserController::class, 'register']);
 
+Route::get('/register/{token?}', [UserController::class, 'verifyToken']);
+Route::post('/register', [UserController::class, 'register']);
 Route::get('/register', function() {
     return Inertia::render('Home', [
         'auth' => Auth::user(),
         'register' => true,
     ]);
 });
-
-Route::get('/register/{token?}', [UserController::class, 'verifyToken']);

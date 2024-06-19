@@ -18,7 +18,7 @@ export default function NewContact({auth}) {
     }
 
     return (
-        <LayoutFour title="Contact">
+        <LayoutFour title="Contact" auth={auth}>
             <div className="registration-container">
                 <div className="cta-form">
                     <p>Questions? Feedback? Concerns? Let us know!</p>

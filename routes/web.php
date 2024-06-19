@@ -11,6 +11,7 @@ use App\Models\AdminSetting;
 use App\Models\Credential;
 use App\Models\HazardCategory;
 use App\Models\Sector;
+use App\Models\User;
 
 Route::get('/', function() {
     return Inertia::render('Home', [
@@ -18,35 +19,29 @@ Route::get('/', function() {
     ]);
 });
 
-Route::get('/database', [UserController::class, 'browse']);
-
-Route::get('/idea/1', function() {
-    return Inertia::render('IdeaOne', [
-        'auth' => Auth::user(),
-    ]);
-});
-
-Route::get('/layout', function() {
-    return Inertia::render('Home', [
-        'auth' => Auth::user(),
-    ]);
-});
-
-Route::get('/idea/2', [UserController::class, 'ideaTwo']);
-
 Route::get('/contact', [FeedbackController::class, 'view']);
 Route::post('/contact', [FeedbackController::class, 'send']);
 
+Route::get('/about', function() {
+    return Inertia::render('About', [
+        'auth' => Auth::user()
+    ]);
+});
+
 Route::middleware('auth')->group(function () {
     Route::get('/account', function() {
-        return Inertia::render('Account', [
+        $user = User::where('id', Auth::user()->id)->with(['credentials', 'privacySettings', 'sectors', 'categories'])->first();
+        return Inertia::render('NewAccount', [
             'auth' => Auth::user(),
-            'privacySettings' => Auth::user()->privacySettings,
+            'user' => $user,
+            'credentials' => Credential::all(),
+            'categories' => HazardCategory::all(),
+            'sectors' => Sector::all(),
             'adminSettings' => AdminSetting::where('type', 'privacy')->get(),
         ]);
     });
     
-    Route::post('/account', [UserController::class, 'update']);
+    Route::put('/account', [UserController::class, 'update']);
     
     Route::post('/admin/feedback', [AdminController::class, 'addRecipient']);
     Route::delete('/admin/feedback/{email?}', [AdminController::class, 'deleteRecipient']);
@@ -62,17 +57,16 @@ Route::get('/login', [LoginController::class, 'viewLogin'])->name('login');
 Route::get('logout', [LoginController::class, 'logout']);
 Route::post('login', [LoginController::class, 'authenticate']);
 
-Route::post('search', [UserController::class, 'search']);
-Route::get('search', [UserController::class, 'viewSearch']);
+Route::post('/database/search', [UserController::class, 'search']);
+Route::get('/database/search', [UserController::class, 'viewSearch']);
+Route::get('/database', [UserController::class, 'browse']);
 
 Route::post('/register', [UserController::class, 'register']);
 
 Route::get('/register', function() {
-    return Inertia::render('Register', [
+    return Inertia::render('Home', [
         'auth' => Auth::user(),
-        'credentials' => Credential::all(),
-        'categories' => HazardCategory::all(),
-        'sectors' => Sector::all()
+        'register' => true,
     ]);
 });
 

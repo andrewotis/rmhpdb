@@ -1,5 +1,26 @@
+/* COLORS */
+$primary-color: #f6b932;
+$grey: #f2f2f2;
+$darkergrey: #ccc;
+$black: #000000;
+$white: #FFF;
+$success: #355E3B;
+$error: #880808;
+$blue: #0049fb;
+$purple: #795cce;
+
+/* BREAKPOINTS */
+$tablet-breakpoint: 768px;
+
 @import '~bootstrap/scss/bootstrap';
-// @import 'stepper';
 // @import './../css/app';
 @import './../css/layout4';
 @import 'registration-form';
+@import 'tabs';
+@import 'toggle-switch';
+@import 'nav';
+@import 'about-us';
+
+.text-align-center {
+    text-align: center;
+}

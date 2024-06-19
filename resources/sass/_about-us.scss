@@ -1,0 +1,115 @@
+.about-content {
+    width: 100%;
+
+    section {
+        margin: auto;
+        border-radius: 10px;
+        margin-top: 3rem;
+        width: 80vw;
+        padding: 3rem;
+        @media(max-width: $tablet-breakpoint) {
+            width: 100%;
+            border-radius: 0px;
+            text-align: start;
+            margin-top: 0;
+        }
+    }
+
+    .intro {
+        background-color: $grey;
+        border-radius: 10px;
+    }
+
+    .rationale {
+        h1 {
+            text-align: center;
+        }
+    }
+
+    .discussion {
+        color: $white;
+        width: 100% !important;
+        border-radius: 0 !important;
+        background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url("http://localhost:8000/img/shutterstock_2077106.jpg");
+        background-size: cover;
+        h1 {            
+            font-size: 20pt;
+            font-weight: bold;
+        }
+        .discussion-content {
+            width: 80vw;
+            margin: auto;
+            padding: 3rem;
+            @media(max-width: $tablet-breakpoint) {
+                width: 100%;
+                padding: 0;
+            }
+        }
+    }
+
+    table {
+        width: 100%;
+        background-color: $white;
+        tr, td {
+            padding: 1rem;
+        }
+        tbody {
+            color: $black;
+        }
+        thead tr {
+            background-color: $purple;
+        }
+        tbody tr:nth-child(odd) {
+            background-color: $grey;
+        }
+        @media(max-width: 600px) {
+            td {
+                display: block;
+            }
+            tr {
+                border-bottom: 1px solid $purple;
+            }
+        }
+    }
+
+    .future-direction {
+        width: 100% !important;
+        padding: 0;
+        .container {
+            padding: 0;
+            width: 100% !important;
+            max-width: unset;
+            display: flex;
+            flex-direction: row;
+            @media(max-width: $tablet-breakpoint) {
+                flex-direction: column;
+            }
+        }
+        
+        .hero-btn {
+            margin-top: 2rem;
+        }
+
+        .left {
+            background-color: $purple;
+            color: $white;
+            padding: 5rem;
+            @media(max-width: $tablet-breakpoint) {
+                padding: 3rem;
+            }
+        }
+        .right {
+            /*background-image: url("http://localhost:8000/img/crop-doctors-shaking-hands.jpg");*/
+            background-image: url("/img/crop-doctors-shaking-hands.jpg");
+            background-size: cover;
+            background-position: 0 100%;
+            @media(max-width: $tablet-breakpoint) {
+                min-height: 400px;
+            }
+        }
+    }
+
+    h1 {
+        margin-bottom: 1.5rem;
+    }
+}

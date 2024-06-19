@@ -1,0 +1,43 @@
+.tabs {
+    overflow: hidden;
+    background-color: $primary-color;
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+
+    @media(min-width: $tablet-breakpoint) {
+        justify-content: center;
+    }
+
+    button {
+        background-color: inherit;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 12px 14px;
+        transition: 0.3s;
+        font-size: .85rem;
+        color: $white;
+    }
+
+    button:hover:not(.active) {
+        background-color: $blue;
+    }
+
+    .active {
+        background-color: $grey;
+        color: $primary-color;
+        font-weight: bold;
+    }
+}
+
+.tab-content {
+    animation: fadeEffect 1s;
+}
+
+@keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }

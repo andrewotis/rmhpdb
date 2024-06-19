@@ -21,7 +21,7 @@ export default function Search({ auth, countries, cities, states }) {
     }
 
     const handleSubmit = _ => {
-        router.post('/search', values);
+        router.post('/database/search', values);
     }
 
     const valid = _ => {

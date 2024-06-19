@@ -3,7 +3,6 @@ import { router } from '@inertiajs/react';
 import LayoutFour from '../Layouts/LayoutFour';
 import ProgressBar from '../Components/ProgressBar';
 import Button from '../Components/Button';
-import passwordValidator from 'password-validator';
 import NewRegisterStepOne from '../Components/NewRegister/NewRegisterStepOne';
 import NewRegisterStepTwo from '../Components/NewRegister/NewRegisterStepTwo';
 import NewRegisterStepThree from '../Components/NewRegister/NewRegisterStepThree';
@@ -11,6 +10,7 @@ import NewRegisterStepFour from '../Components/NewRegister/NewRegisterStepFour';
 import NewRegisterStepFive from '../Components/NewRegister/NewRegisterStepFive';
 import NewRegisterStepSix from '../Components/NewRegister/NewRegisterStepSix';
 import NewRegisterStepSeven from '../Components/NewRegister/NewRegisterStepSeven';
+import { createPasswordValidatorSchema } from '../passwordTools';
 
 export default function NewRegister({ auth, tokenRecord, credentials, categories, sectors }) {
     const [activeStep, setActiveStep] = useState(1);
@@ -18,19 +18,8 @@ export default function NewRegister({ auth, tokenRecord, credentials, categories
     const [schema, setSchema] = useState(null);
 
     useEffect(() => {
-        createPasswordValidatorSchema();
+        createPasswordValidatorSchema(setSchema);
     },[]);
-
-    const createPasswordValidatorSchema = _ => {
-        var s = new passwordValidator();
-        s
-            .is().min(8)
-            .has().uppercase()
-            .has().lowercase()
-            .has().digits(1)
-            .has().not().spaces()
-        return setSchema(s);
-    }
 
     useEffect(() => {
         switch(activeStep) {

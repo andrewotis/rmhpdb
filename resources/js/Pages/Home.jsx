@@ -5,7 +5,15 @@ import Footer from "../Components/Footer";
 import Nav from "../Components/Nav";
 import Button from "../Components/Button";
 
-export default function Home({ auth }) {
+export default function Home({ auth, register }) {
+    useEffect(() => {
+        if(register) {
+            window.setTimeout( () => {
+                document.querySelector('#registration').scrollIntoView();
+            }, 1000);   
+        }
+    },[]);
+
     return (
         <>
             <section className="header">
@@ -21,7 +29,7 @@ export default function Home({ auth }) {
                     <Link href="/database">
                         <Button>Browse Database</Button>
                     </Link>
-                    <Link href="/search" replace>
+                    <Link href="/database/search" replace>
                         <Button>Search Database</Button>
                     </Link>
                 </div>

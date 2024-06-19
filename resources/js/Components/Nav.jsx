@@ -20,6 +20,11 @@ export default function Nav({ auth, children }) {
                         </Link>
                     </li>
                     <li>
+                        <Link href="/about">
+                            ABOUT
+                        </Link>
+                    </li>
+                    <li>
                         <Link href="/database">
                             DATABASE
                         </Link>

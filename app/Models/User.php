@@ -24,7 +24,7 @@ class User extends Authenticatable {
         'phone_number',
         'email',
         'password',
-        'registration_number'
+        'registration_number',
     ];
 
     public function userMeta(): HasMany {

@@ -21,48 +21,110 @@ use Illuminate\Support\Facades\Redirect;
 
 class UserController extends Controller {
     public function update(Request $request) {
-        $data = $request->input('data');
-        $user = User::find($data['id']);
+        // what has changed?
+        $old = $request->input('old');
+        $new = $request->input('new');
 
-        // account update:
-        if($request->input('key') == 'account') {
+        // user values
+        $keys = [ 'first_name', 'last_name', 'company', 'address', 'address2', 'city', 'state', 'zip', 'country', 'phone_number', 'email' ];
+        $user_modified = false;
+        foreach($keys as $key) {
+            if($old[$key] !== $new[$key]) $user_modified = true;
+        }
+
+        $user = Auth::user();
+
+        if($user_modified) {
+
             // make sure they're not updating to an email address that already exists
-            $check = User::where('id', "!=", $data['id'])->where('email', $data['email'])->get();
+            $check = User::where('id', "!=", $user->id)->where('email', $new['email'])->get();
             if($check->count()) {
                 return redirect('/account')->withErrors(['error' => 'Email is already in use']);
             }
 
             $user->update([
-                'first_name' => $data['first_name'],
-                'last_name' => $data['last_name'],
-                'company' => $data['company'],
-                'address' => $data['address'],
-                'address2' => $data['address2'],
-                'city' => $data['city'],
-                'state' => $data['state'],
-                'zip' => $data['zip'],
-                'country' => $data['country'],
-                'phone_number' => $data['phone_number'],
-                'email' => $data['email'],
+                'first_name' => $new['first_name'],
+                'last_name' => $new['last_name'],
+                'company' => $new['company'],
+                'address' => $new['address'],
+                'address2' => $new['address2'],
+                'city' => $new['city'],
+                'state' => $new['state'],
+                'zip' => $new['zip'],
+                'country' => $new['country'],
+                'phone_number' => $new['phone_number'],
+                'email' => $new['email']
             ]);
-
-            return redirect('/account')->with(['message' => 'Successfully updated account info!']);
         }
 
-        // password update:
-        if($request->input('key') == 'password') {
-            $credentials = [
-                'email' => $data['email'],
-                'password' => $data['current_password']
-            ];
-            if (Auth::once($credentials)) {
-                $user->password = Hash::make($data['new_password']);
-                $user->save();
-                return redirect('/logout');
-            } else {
-                return redirect('/account')->withErrors(['error' => 'Incorrect password']);
+        // was the password updated?
+        if($new['password'] !== null && ($new['password'] == $new['confirm_password'])) {
+            $user->password = Hash::make($new['password']);
+            $user->save();
+        }
+
+        // credentials
+        if($old['credentials'] !== $new['credentials']) {
+            // delete the existing credentials
+            $deleted = DB::table('user_meta')->where('user_id', $user->id)->where('type', 'credential')->delete();
+            foreach($new['credentials'] as $credential) {
+                UserMeta::create([
+                    'user_id' => $user->id,
+                    'type' => 'credential',
+                    'key' => 'credential_id',
+                    'value' => $credential['value']
+                ]);
             }
         }
+        
+        // sectors
+        if($old['sectors'] !== $new['sectors']) {
+            // delete the existing sectors
+            $deleted = DB::table('user_meta')->where('user_id', $user->id)->where('type', 'sector')->delete();
+            // add sectors
+            foreach($new['sectors'] as $sector) {
+                UserMeta::create([
+                    'user_id' => $user->id,
+                    'type' => 'sector',
+                    'key' => 'sector_id',
+                    'value' => $sector['value']
+                ]);
+            }
+        }
+
+        // hazard categories
+        if($old['categories'] !== $new['categories']) {
+            // delete the existing categories
+            $deleted = DB::table('user_meta')->where('user_id', $user->id)->where('type', 'category')->delete();
+            foreach($new['categories'] as $category) {
+                UserMeta::create([
+                    'user_id' => $user->id,
+                    'type' => 'category',
+                    'key' => 'category_id',
+                    'value' => $category['value']
+                ]);
+            }
+        }
+
+        // privacy settings
+        if($old['privacy_settings'] !== $new['privacy_settings']) {
+            // delete the existing privacy settings
+            $deleted = DB::table('user_meta')->where('user_id', $user->id)->where('type', 'privacy_setting')->delete();
+            foreach($new['privacy_settings'] as $key => $val) {
+                if($val == true) {
+                    UserMeta::create([
+                        'user_id' => $user->id,
+                        'type' => 'privacy_setting',
+                        'key' => $key,
+                        'value' => 'true'
+                    ]);
+                }
+            }
+        }
+
+        die();
+        return redirect('/account')->with(['message' => 'Successfully updated account info!']);
+
 
         // privacy settings update:
         if($request->input('key') == 'privacy') {

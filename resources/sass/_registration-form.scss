@@ -1,15 +1,3 @@
-/* COLORS */
-$primary-color: #f6b932;
-$grey: #f2f2f2;
-$darkergrey: #ccc;
-$black: #000000;
-$success: #355E3B;
-$error: #880808;
-
-/* BREAKPOINTS */
-$tablet-breakpoint: 768px;
-
-
 .registration-input-form-container {
     width: 100%;
     max-width: 768px;
@@ -36,6 +24,7 @@ $tablet-breakpoint: 768px;
 
     .registration-input-form {
         align-self: center;
+        width: 70%;
     }
 
     .registration-input-form-controls {

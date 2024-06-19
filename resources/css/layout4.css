@@ -5,20 +5,21 @@
 }
 
 body {
-    overflow-x: hidden;
+    overflow-x: hidden !important;
 }
 
 .header {
     min-height: 100vh;
     width: 100%;
-    background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url("/img/home-background.jpg");
-    /* background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url("http://localhost:8000/img/home-background.jpg"); */
+    background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url("/img/home-background.jpg"); 
+    /*background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url("http://localhost:8000/img/home-background.jpg"); */
     background-position: center;
     background-size: cover;
     position: relative;
 }
 
 /*                                                      nav section */
+/*
 nav {
     display: flex;
     padding: 2% 6%;
@@ -69,7 +70,7 @@ nav .fa-rm {
 .nav-logo-text {
     font-size: 28px;
     color: #fff;
-}
+}*/
 
 .text-box {
     width: 90%;
@@ -325,7 +326,7 @@ nav .fa-rm {
     height: 35vh;
     width: 100%;
     background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url("/img/Fotolia_3963810_Subscription_L.jpg");
-    /* background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url("http://localhost:8000/img/Fotolia_3963810_Subscription_L.jpg");*/
+    /*background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url("http://localhost:8000/img/Fotolia_3963810_Subscription_L.jpg");*/
     background-position: center;
     background-size: cover;
     text-align: center;
@@ -416,7 +417,7 @@ nav .fa-rm {
     .text-box h1 {
         font-size: 20px;
     }
-    .nav-links ul li {
+    /*.nav-links ul li {
         display: block;
     }
     .nav-links {
@@ -439,7 +440,7 @@ nav .fa-rm {
     }
     .nav-links ul {
         padding: 30px;
-    }
+    }*/
 }
 
 .register {

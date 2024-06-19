@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import LayoutFour from '../Layouts/LayoutFour';
 import { prettifyDate } from '../tools';
 
-export default function Database({ users, credentials, sectors, categories }) {
+export default function Database({ auth, users, credentials, sectors, categories }) {
     const [sorted, setSorted] = useState(users);
     const [filtered, setFiltered] = useState(users);
     const [currentPage, setCurrentPage] = useState(1);
@@ -72,7 +72,7 @@ export default function Database({ users, credentials, sectors, categories }) {
     },[filter]);
 
     return (
-        <LayoutFour title="Database" noPaddingUnderHeader>
+        <LayoutFour title="Database" noPaddingUnderHeader auth={auth}>
             <div className="database-table-controls">
                 <div className="col padding-left-4px">
                     Display&nbsp;<select 

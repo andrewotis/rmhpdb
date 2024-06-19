@@ -1,4 +1,4 @@
-export default function FloatingLabelInput({type="text", label, name, onChange, value}) {
+export default function FloatingLabelInput({type="text", label, name, onChange, value, disabled=false}) {
 
     return (
         <>
@@ -9,6 +9,7 @@ export default function FloatingLabelInput({type="text", label, name, onChange, 
                 id={name}
                 value={value}
                 onChange={onChange}
+                disabled={disabled}
             />
             <label htmlFor={name} className="form__label">{label}</label>
         </>

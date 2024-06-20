@@ -21,9 +21,9 @@ Route::get('/', function() {
     ]);
 });
 
-Route::get('/account/password/forgot/{token}', [PasswordResetController::class, 'viewReset']);
 Route::put('/account/password/forgot/', [PasswordResetController::class, 'reset']);
 Route::get('/account/password/forgot', [PasswordResetController::class, 'forgot']);
+Route::get('/account/password/forgot/{token}', [PasswordResetController::class, 'viewReset']);
 Route::post('/account/password/forgot', [PasswordResetController::class, 'requestResetEmail']);
 
 Route::get('/contact', [FeedbackController::class, 'view']);
@@ -70,7 +70,6 @@ Route::get('/database/search', [UserController::class, 'viewSearch']);
 Route::get('/database', [UserController::class, 'browse']);
 
 
-Route::get('/register/{token?}', [UserController::class, 'verifyToken']);
 Route::post('/register', [UserController::class, 'register']);
 Route::get('/register', function() {
     return Inertia::render('Home', [
@@ -78,3 +77,4 @@ Route::get('/register', function() {
         'register' => true,
     ]);
 });
+Route::get('/register/{token?}', [UserController::class, 'verifyToken']);

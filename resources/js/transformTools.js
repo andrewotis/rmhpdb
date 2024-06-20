@@ -43,3 +43,30 @@ export const userMetasToPrivacySettings = (metas, allowedAdminPrivacySettings) =
     });
     return obj;
 }
+
+export const transformCredentialsForPreview = (userCredentials, credentials) => {
+    let arr = [];
+    userCredentials.map(userCred => {
+        const c = credentials.find(credential => credential.id == userCred.value);
+        arr.push(c.credential);
+    });
+    return arr.join(", ");
+}
+
+export const transformSectorsForPreview = (userSectors, sectors) => {
+    let arr = [];
+    userSectors.map(userSector => {
+        const s = sectors.find(sector => sector.id == userSector.value);
+        arr.push(s.naics_code);
+    });
+    return arr.join(", ");
+}
+
+export const transformCategoriesForPreview = (userCategories, categories) => {
+    let arr = [];
+    userCategories.map(userCategory => {
+        const c = categories.find(category => category.id == userCategory.value);
+        arr.push(c.category);
+    });
+    return arr.join(", ");
+}

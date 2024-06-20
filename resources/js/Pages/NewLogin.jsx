@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { router, usePage } from '@inertiajs/react';
+import { router, usePage, Link } from '@inertiajs/react';
 import LayoutFour from '../Layouts/LayoutFour';
 import FloatingLabelInput from '../Components/FloatingLabelInput';
 import Button from '../Components/Button';
@@ -44,13 +44,22 @@ export default function NewLogin({ auth }) {
                         onChange={handleChange}
                         value={values.password}
                     />
-                    <Button 
-                        filled
-                        disabled={!valid()}
-                        onClick={valid() ? handleSubmit : undefined}
-                    >
-                        Login 
-                    </Button>
+                    <div className="login-controls">
+                        <div className="forgot-password">
+                            <Link href="/account/password/forgot">
+                                Forgot Password?
+                            </Link>
+                        </div>
+                        <div className="login-button">
+                            <Button 
+                                filled
+                                disabled={!valid()}
+                                onClick={valid() ? handleSubmit : undefined}
+                            >
+                                Login
+                            </Button>
+                        </div>
+                    </div>
                 </form>
             </div>
         </LayoutFour>

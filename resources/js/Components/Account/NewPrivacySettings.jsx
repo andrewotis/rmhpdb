@@ -1,3 +1,4 @@
+import { useRef, useEffect, useState } from "react";
 import ToggleSwitch from "../ToggleSwitch";
 import rfdc from 'rfdc';
 
@@ -13,27 +14,32 @@ export default function NewPrivacySettings({display, values, setValues, adminSet
     }
 
     return (
-        <div className={`tab-content${!display ? ' display-none' : ''}`}>
-            Please choose which fields you would like to set as private. Private fields will not be shown on the public database.
-            <table style={{margin: 'auto'}}>
-                <tbody>
-                    {
-                        adminSettings.map(setting => {
-                            return (
-                                <tr key={setting}>
-                                    <td>{setting.replace("_", " ")}</td>
-                                    <td>
-                                        <ToggleSwitch 
-                                            checked={values.privacy_settings[setting]}
-                                            onChange={() => toggle(setting)}
-                                        />
-                                    </td>
-                                </tr>
-                            )
-                        })
-                    }
-                </tbody>
-            </table>
+        <>
+        <div className={`${!display ? 'display-none' : ''}`}>
+            <div className={`tab-content`}>
+                Please choose which fields you would like to set as private. Above is a live preview of how your record will be displayed.
+                <table style={{margin: 'auto', marginTop: '.75rem'}}>
+                    <tbody>
+                        {
+                            adminSettings.map(setting => {
+                                return (
+                                    <tr key={setting}>
+                                        <td>{setting.replace("_", " ")}</td>
+                                        <td>
+                                            <ToggleSwitch 
+                                                checked={values.privacy_settings[setting]}
+                                                onChange={() => toggle(setting)}
+                                            />
+                                        </td>
+                                    </tr>
+                                )
+                            })
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
+        
+        </>
     );
 }

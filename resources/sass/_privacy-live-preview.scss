@@ -1,0 +1,39 @@
+.privacy-live-preview-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: auto;
+}
+
+.privacy-live-preview {
+    font-size: 8pt !important;
+    width: 100%;
+    border-bottom: 2px solid $primary-color;
+    animation: fadeEffect 1s;
+    
+    @keyframes fadeEffect {
+        from {opacity: 0;}
+        to {opacity: 1;}
+    }
+
+    thead td {
+        background-color: $white;
+        font-weight: bold;
+    }
+
+    td, th {
+        vertical-align: top;
+    }
+
+    td {
+        white-space: nowrap;
+        padding: 2px !important;
+        background-color: $grey;
+    }
+    @media(max-width: $tablet-breakpoint) {
+        tr {
+            overflow-x: scroll;
+            max-width: 400px;
+            width: 400px;
+        }
+    }
+    
+}

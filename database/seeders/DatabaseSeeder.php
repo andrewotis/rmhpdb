@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\AdminSetting;
 use App\Models\Credential;
 use App\Models\Sector;
+use App\Models\UserMeta;
 use App\Models\HazardCategory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -24,6 +25,37 @@ class DatabaseSeeder extends Seeder {
         $this->addCredentials();
         $this->addHazardCategories();
         $this->addSectors();
+        $this->addUserMetas();
+    }
+
+    public function addUserMetas() {
+        $users = User::where('type', 'registered_mhp')->get();
+        foreach($users as $user) {
+            // add credentials
+            $credential = Credential::all()->random();
+            UserMeta::create([
+                'user_id' => $user->id,
+                'type' => 'credential',
+                'key' => 'credential_id',
+                'value' => $credential->id
+            ]);
+            // add sectors
+            $sector = Sector::all()->random();
+            UserMeta::create([
+                'user_id' => $user->id,
+                'type' => 'sector',
+                'key' => 'sector_id',
+                'value' => $sector->id
+            ]);
+            // add category
+            $category = HazardCategory::all()->random();
+            UserMeta::create([
+                'user_id' => $user->id,
+                'type' => 'category',
+                'key' => 'category_id',
+                'value' => $category->id
+            ]);
+        }
     }
 
     public function addFeedbackRecipients() {
@@ -148,10 +180,10 @@ class DatabaseSeeder extends Seeder {
             'company' => 'vandalay industries',
             'type' => 'admin',
             'address' => '123 fake st',
-            'city' => 'springfield',
-            'state' => 'OH',
+            'city' => 'Springfield',
+            'state' => 'Ohio',
             'zip' => '12345',
-            'country' => "USA",
+            'country' => "United States",
             'phone_number' => '222-333-4444',
             'email' => "andrew.otis@gmail.com",
             'password' => Hash::make('password'),
@@ -162,10 +194,10 @@ class DatabaseSeeder extends Seeder {
             'company' => 'admin',
             'type' => 'admin',
             'address' => '123 fake st',
-            'city' => 'springfield',
-            'state' => 'OH',
+            'city' => 'Springfield',
+            'state' => 'Ohio',
             'zip' => '12345',
-            'country' => "USA",
+            'country' => "United States",
             'phone_number' => '222-333-4444',
             'email' => "maternityprotection@gmail.com",
             'password' => Hash::make('b3H34ltHy!'),
@@ -200,10 +232,10 @@ class DatabaseSeeder extends Seeder {
             'last_name' => "user",
             'company' => 'vandalay industries',
             'address' => '123 fake st',
-            'city' => 'springfield',
-            'state' => 'OH',
+            'city' => 'Springfield',
+            'state' => 'Ohio',
             'zip' => '12345',
-            'country' => "USA",
+            'country' => "United States",
             'phone_number' => '222-333-4444',
             'registration_number' => $maxreg + 1,
             'email' => "testuser@gmail.com",

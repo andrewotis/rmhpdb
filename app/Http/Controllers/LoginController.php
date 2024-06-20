@@ -26,7 +26,7 @@ class LoginController extends Controller {
                 ?
                     redirect('/')
                         :
-                            redirect('/');
+                            redirect('/account');
         }
  
         return back()->withErrors([

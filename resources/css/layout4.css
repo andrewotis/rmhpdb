@@ -12,7 +12,6 @@ body {
     min-height: 100vh;
     width: 100%;
     background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url("/img/home-background.jpg"); 
-    /*background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url("http://localhost:8000/img/home-background.jpg"); */
     background-position: center;
     background-size: cover;
     position: relative;
@@ -326,7 +325,6 @@ nav .fa-rm {
     height: 35vh;
     width: 100%;
     background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url("/img/Fotolia_3963810_Subscription_L.jpg");
-    /*background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url("http://localhost:8000/img/Fotolia_3963810_Subscription_L.jpg");*/
     background-position: center;
     background-size: cover;
     text-align: center;

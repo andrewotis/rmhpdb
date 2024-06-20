@@ -12,12 +12,19 @@ use App\Models\Credential;
 use App\Models\HazardCategory;
 use App\Models\Sector;
 use App\Models\User;
+use Database\Seeders\StatesAndCities;
+use App\Http\Controllers\PasswordResetController;
 
 Route::get('/', function() {
     return Inertia::render('Home', [
         'auth' => Auth::user(),
     ]);
 });
+
+Route::get('/account/password/forgot/{token}', [PasswordResetController::class, 'viewReset']);
+Route::put('/account/password/forgot/', [PasswordResetController::class, 'reset']);
+Route::get('/account/password/forgot', [PasswordResetController::class, 'forgot']);
+Route::post('/account/password/forgot', [PasswordResetController::class, 'requestResetEmail']);
 
 Route::get('/contact', [FeedbackController::class, 'view']);
 Route::post('/contact', [FeedbackController::class, 'send']);
@@ -31,6 +38,7 @@ Route::get('/about', function() {
 Route::middleware('auth')->group(function () {
     Route::get('/account', function() {
         $user = User::where('id', Auth::user()->id)->with(['credentials', 'privacySettings', 'sectors', 'categories'])->first();
+
         return Inertia::render('NewAccount', [
             'auth' => Auth::user(),
             'user' => $user,

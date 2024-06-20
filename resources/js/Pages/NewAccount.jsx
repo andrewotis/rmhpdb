@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { router } from '@inertiajs/react';
+import { router, usePage } from '@inertiajs/react';
 import LayoutFour from '../Layouts/LayoutFour';
 import NewPersonalInfo from '../Components/Account/NewPersonalInfo';
 import NewAddress from '../Components/Account/NewAddress';
@@ -8,15 +8,19 @@ import NewQualifications from '../Components/Account/NewQualifications';
 import NewSecurity from '../Components/Account/NewSecurity';
 import NewUpdatePassword from '../Components/Account/NewUpdatePassword';
 import Button from '../Components/Button';
-import { transformedCredentials, transformedCategories, transformedSectors, userMetasToCredentials, 
-    userMetasToCategories, userMetasToSectors, transformAdminSettings, userMetasToPrivacySettings } from '../transformTools';
+import Flash from '../Components/Flash';
+import LivePrivacySettingsPreview from '../Components/Account/LivePrivacySettingsPreview';
 import { createPasswordValidatorSchema } from '../passwordTools';
+import { transformedCredentials, transformedCategories, transformedSectors, userMetasToCredentials, userMetasToCategories, 
+    userMetasToSectors, transformAdminSettings, userMetasToPrivacySettings } from '../transformTools';
 
 export default function NewAccount({ auth, user, credentials, categories, sectors, adminSettings }) {
     const [schema, setSchema] = useState(null);
     const [transformedInitialValues, setTransformedInitialValues] = useState({});
     const [values, setValues] = useState({});
     const [activeTab, setActiveTab] = useState('personalInfo');
+    const { errors } = usePage().props;
+    const { flash } = usePage().props;
 
     useEffect(() => {
         createPasswordValidatorSchema(setSchema);
@@ -57,6 +61,12 @@ export default function NewAccount({ auth, user, credentials, categories, sector
             }
         }
     }
+
+    useEffect(() => {
+        if(flash.message !== null) {
+            setActiveTab('updated');
+        }
+    },[flash.message]);
 
     const readyToSubmit = _ => {
         return passwordsValid() && somethingChanged()
@@ -99,6 +109,18 @@ export default function NewAccount({ auth, user, credentials, categories, sector
                     })
                 }
             </div>
+            { 
+                transformedDataHasLoaded() && 
+                    values.privacy_settings && 
+                        <LivePrivacySettingsPreview 
+                            activeTab={activeTab} 
+                            adminSettings={adminSettings} 
+                            values={values}
+                            credentials={credentials}
+                            sectors={sectors}
+                            categories={categories}
+                        />
+            }
             <div className="registration-input-form-container">
                 <form className="registration-input-form">
                     { transformedDataHasLoaded() && // dont render until all data has been transformed
@@ -138,17 +160,24 @@ export default function NewAccount({ auth, user, credentials, categories, sector
                             <NewSecurity 
                                 display={activeTab=='security'}
                             />
+                            <div className={`tab-content${activeTab!='updated' ? ' display-none' : ''}`}>
+                                { flash.message && <Flash type="success" message={flash.message}/> }
+                                { errors.error && <Flash type="error" message={errors.error}/> }
+                            </div>
                         </>
 
                     }
                     <div className="registration-input-form-controls">
-                        <Button 
-                            filled
-                            disabled={!readyToSubmit()}
-                            onClick={readyToSubmit() ? handleSubmit : undefined}
-                        >
-                            { !passwordsValid() ? 'Invalid Password' : 'Update'}
-                        </Button>
+                        {
+                            activeTab !== 'updated' &&
+                                <Button 
+                                    filled
+                                    disabled={!readyToSubmit()}
+                                    onClick={readyToSubmit() ? handleSubmit : undefined}
+                                >
+                                    { !passwordsValid() ? 'Invalid Password' : 'Update'}
+                                </Button>
+                        }                        
                     </div>
                 </form>
             </div>

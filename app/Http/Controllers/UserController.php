@@ -122,24 +122,7 @@ class UserController extends Controller {
             }
         }
 
-        die();
         return redirect('/account')->with(['message' => 'Successfully updated account info!']);
-
-
-        // privacy settings update:
-        if($request->input('key') == 'privacy') {
-            $deleted = DB::table('user_meta')->where('user_id', $data['id'])->where('type', 'privacy_setting')->delete();
-            foreach($data as $key => $val) {
-                if($key == 'id') continue;
-                UserMeta::create([
-                    'user_id' => $data['id'],
-                    'type' => 'privacy_setting',
-                    'key' => $key,
-                    'value' => 'true'
-                ]);
-            }
-            return redirect('/account')->with(['message' => 'Successfully updated privacy settings!']);
-        }
     }
 
     public function register(Request $request) { 

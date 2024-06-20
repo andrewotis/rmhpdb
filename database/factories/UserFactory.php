@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Models\User;
+use Database\Seeders\StatesAndCities;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -24,16 +25,17 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $stateAndCity = StatesAndCities::getRandomStateAndCity();
         return [
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
             'email' => fake()->unique()->safeEmail(),
             'address' => fake()->buildingNumber() . ' ' . fake()->streetName() . ' ' . fake()->streetSuffix(),
             'address2' => fake()->secondaryAddress(),
-            'city' => fake()->city(),
-            'state' => fake()->state(),
-            'zip' => fake()->postcode(),
-            'country' => fake()->country(),
+            'city' => $stateAndCity['city'],
+            'state' => $stateAndCity['state'],
+            'zip' => substr(fake()->postcode(),0,5),
+            'country' => 'United States',
             'phone_number' => $this->phone(),
             'company' => fake()->company(),
             'registration_number' => 1,

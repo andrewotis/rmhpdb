@@ -1,9 +1,16 @@
+import { useEffect, useState } from "react";
+
 export default function Footer({ children }) {
+    const [year, setYear] = useState(undefined);
+    useEffect(() => {
+        const d = new Date();
+        setYear(d.getFullYear());
+    },[]);
 
     return (
         <>
             <div className="footer">
-                Website by Andrew Otis 2024
+                &copy; {year} RMHP
             </div>
         </>
     );

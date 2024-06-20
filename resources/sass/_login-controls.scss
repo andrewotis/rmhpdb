@@ -1,0 +1,27 @@
+.login-controls {
+    margin: 0.625rem auto;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    div {
+        width: 50%;
+    }
+}
+
+.forgot-password {
+    font-size: 9pt;
+    a {
+        text-decoration: none;
+        color: $blue;
+    }
+}
+
+.login-button {
+    text-align: right;
+    .hero-btn-filled {
+        margin: 0;
+        width: 100%;
+        float: unset;
+    }
+}

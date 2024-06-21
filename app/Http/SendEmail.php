@@ -57,4 +57,33 @@ class SendEmail {
 
         return $response->success() ? true : false;
     }
+
+    public static function sendFeedbackEmail($input) {
+        $mj = Mailjet::getClient();
+        $vars = [
+            'name' => $input['name'],
+            'phone' => array_key_exists('phone', $input) ? $input['phone'] : '',
+            'email' => $input['email'],
+            'message' => $input['message']
+        ];
+
+        //$recipients = $this->getRecipients();
+            $body = [
+                'FromEmail' => "admin@andrew-otis.com",
+                'FromName' => "Administrator",
+                'Subject' => "Automated Message from andrew-otis.com",
+                'MJ-TemplateID' => 6017725,
+                'MJ-TemplateLanguage' => true,
+                'Vars' => json_decode(json_encode($vars), true),
+                'Recipients' => [
+                    ['Email' => 'andrew.otis@gmail.com'],
+                //  ['Email' => 'deletersoftware@gmail.com'],
+                ]
+            ];
+
+        $response = $mj->post(Resources::$Email, ['body' => $body]);
+
+        return $response->success() ? true : false;
+    }
+
 }

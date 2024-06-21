@@ -185,6 +185,14 @@ nav .fa-rm {
     .reg-form-controls .hero-btn-filled {
         display: initial;
     }
+
+    .registration-form {
+        width: 100%;
+    }
+
+    .registration-form input, .registration-form textarea {
+        width: 100% !important;
+    }
 }
 
 @media(min-width: 768px) {

@@ -42,14 +42,14 @@ export default function NewAddress({display, values, setValues}) {
         <div className={`tab-content${!display ? ' display-none' : ''}`}>
             <FloatingLabelInput
                 label="Address"
-                name="address"
-                value={values.address}
+                name="address_one"
+                value={values.address_one}
                 onChange={handleChange}
             />
             <FloatingLabelInput
                 label="Address2"
-                name="address2"
-                value={values.address2}
+                name="address_two"
+                value={values.address_two}
                 onChange={handleChange}
             />
             <select 

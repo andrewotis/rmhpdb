@@ -17,6 +17,14 @@ export default function NewContact({auth}) {
         setValues({...values, [e.target.id] : e.target.value});
     }
 
+    const handleSubmit = _ => {
+        router.post('/contact', values)
+    }
+
+    const inputValid = _ => {
+        return validate(values.email) && name.length > 0 && message.length > 0;
+    }
+
     return (
         <LayoutFour title="Contact" auth={auth}>
             <div className="registration-container">
@@ -70,7 +78,8 @@ export default function NewContact({auth}) {
                     <label for="phoneNumber" className="form__label">Message</label>
                     <Button 
                         filled
-                        disabled
+                        disabled={!inputValid}
+                        onClick={inputValid ? handleSubmit : undefined}
                     >
                         Send
                     </Button>

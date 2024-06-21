@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\AdminSetting;
 use App\Models\Credential;
+use App\Models\HazardCategory;
+use App\Models\Sector;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
@@ -18,6 +20,8 @@ class AdminController extends Controller {
             'auth' => Auth::user(),
             'settings' => AdminSetting::all(),
             'credentials' => Credential::all(),
+            'sectors' => Sector::all(),
+            'categories' => HazardCategory::all(),
         ]);
     }
 

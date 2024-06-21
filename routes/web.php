@@ -38,7 +38,7 @@ Route::get('/about', function() {
 Route::middleware('auth')->group(function () {
     Route::get('/account', function() {
         $user = User::where('id', Auth::user()->id)->with(['credentials', 'privacySettings', 'sectors', 'categories'])->first();
-
+        
         return Inertia::render('NewAccount', [
             'auth' => Auth::user(),
             'user' => $user,
@@ -49,8 +49,7 @@ Route::middleware('auth')->group(function () {
         ]);
     });
     
-    Route::put('/account', [UserController::class, 'update']);
-    
+    Route::put('/account', [UserController::class, 'update']);    
     Route::post('/admin/feedback', [AdminController::class, 'addRecipient']);
     Route::delete('/admin/feedback/{email?}', [AdminController::class, 'deleteRecipient']);
     Route::post('/admin/credentials', [AdminController::class, 'addCredential']);
@@ -62,13 +61,12 @@ Route::post('/users', [UserController::class, 'store']);
 Route::post('/account/email', [UserController::class, 'checkEmail']);
 
 Route::get('/login', [LoginController::class, 'viewLogin'])->name('login');
-Route::get('logout', [LoginController::class, 'logout']);
-Route::post('login', [LoginController::class, 'authenticate']);
+Route::get('/logout', [LoginController::class, 'logout']);
+Route::post('/login', [LoginController::class, 'authenticate']);
 
 Route::post('/database/search', [UserController::class, 'search']);
 Route::get('/database/search', [UserController::class, 'viewSearch']);
 Route::get('/database', [UserController::class, 'browse']);
-
 
 Route::post('/register', [UserController::class, 'register']);
 Route::get('/register', function() {

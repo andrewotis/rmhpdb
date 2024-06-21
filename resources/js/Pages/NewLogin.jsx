@@ -18,7 +18,8 @@ export default function NewLogin({ auth }) {
         setValues({...values, [e.target.id] : e.target.value});
     }
 
-    const handleSubmit = _ => {
+    const handleSubmit = e => {
+        e.preventDefault();
         router.post('/login', values);
     }
 
@@ -30,7 +31,7 @@ export default function NewLogin({ auth }) {
             { errors.error && <Flash type="error" message={errors.error}/> }
 
             <div className="registration-container">
-                <form className="registration-form">
+                <form className="registration-form" onSubmit={handleSubmit}>
                     <FloatingLabelInput 
                         label="Email"
                         name="email"
@@ -51,6 +52,7 @@ export default function NewLogin({ auth }) {
                             </Link>
                         </div>
                         <div className="login-button">
+                            <button type="submit" className="display-none" /> {/* <== to allow enter key press to login */}
                             <Button 
                                 filled
                                 disabled={!valid()}

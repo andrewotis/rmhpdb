@@ -10,16 +10,47 @@ import NewRegisterStepFour from '../Components/NewRegister/NewRegisterStepFour';
 import NewRegisterStepFive from '../Components/NewRegister/NewRegisterStepFive';
 import NewRegisterStepSix from '../Components/NewRegister/NewRegisterStepSix';
 import NewRegisterStepSeven from '../Components/NewRegister/NewRegisterStepSeven';
+import NewRegisterStepEight from '../Components/NewRegister/NewRegisterStepEight';
+import LivePrivacySettingsPreview from '../Components/Account/LivePrivacySettingsPreview';
 import { createPasswordValidatorSchema } from '../passwordTools';
+import { transformAdminSettings } from '../transformTools';
 
-export default function NewRegister({ auth, tokenRecord, credentials, categories, sectors }) {
+export default function NewRegister({ auth, tokenRecord, credentials, categories, sectors, adminSettings }) {
     const [activeStep, setActiveStep] = useState(1);
     const [percentage, setPercentage] = useState(0);
     const [schema, setSchema] = useState(null);
+    const [values, setValues] = useState({
+        first_name: '',
+        last_name: '',
+        email: '',
+        address_one: '',
+        address_two: '',
+        address: '',
+        city: '',
+        state: '',
+        zip: '',
+        country: '',
+        company: '',
+        phone_number: '',
+        credentials: [],
+        sectors: [],
+        categories: [],
+        password: '',
+        confirm_password: '',
+        privacy_settings: {}
+    });
 
     useEffect(() => {
         createPasswordValidatorSchema(setSchema);
     },[]);
+
+    useEffect(() => {
+        setValues({...values, 
+            first_name: tokenRecord.first_name,
+            last_name: tokenRecord.last_name,
+            email: tokenRecord.email
+        });
+    },[tokenRecord]);
 
     useEffect(() => {
         switch(activeStep) {
@@ -31,29 +62,14 @@ export default function NewRegister({ auth, tokenRecord, credentials, categories
             case 4:
             case 5:
             case 6:
-                setPercentage(16.6 * (activeStep - 1));
-                break;
             case 7:
+                setPercentage(15.5 * (activeStep - 1));
+                break;
+            case 8:
                 setPercentage(100);
                 break;
         }
-    }, [activeStep]);
-
-    const [values, setValues] = useState({
-        address: '',
-        address2: '',
-        city: '',
-        state: '',
-        zip: '',
-        country: '',
-        company: '',
-        phone_number: '',
-        credentials: [],
-        sectors: [],
-        categories: [],
-        password: '',
-        confirm_password: ''
-    });
+    }, [activeStep]);    
 
     const handleChange = e => {
         setValues({...values, [e.target.id] : e.target.value});
@@ -84,6 +100,18 @@ export default function NewRegister({ auth, tokenRecord, credentials, categories
     return (
         <LayoutFour auth={auth} title="Register" noPaddingUnderHeader>
             <ProgressBar percentage={percentage} text={activeStep == 1 ? '' : `Step ${activeStep}`}/>
+                {   activeStep==7 &&
+                    <LivePrivacySettingsPreview
+                        display={activeStep==7} 
+                        adminSettings={adminSettings} 
+                        values={values}
+                        credentials={credentials}
+                        sectors={sectors}
+                        categories={categories}
+                        displayRegistrationDate={false}
+                        displayRegistrationNumber={false}
+                    />
+                }
             <div className="registration-input-form-container">
                 <p>Registration for <b>{ tokenRecord.first_name } { tokenRecord.last_name }</b>: <i>{ tokenRecord.email }</i></p>
                 <form className="registration-input-form">
@@ -131,7 +159,14 @@ export default function NewRegister({ auth, tokenRecord, credentials, categories
                     />
                     <NewRegisterStepSeven
                         values={values}
+                        setValues={setValues}
                         display={activeStep == 7}
+                        tokenRecord={tokenRecord}
+                        adminSettings={transformAdminSettings(adminSettings)}
+                    />
+                    <NewRegisterStepEight
+                        values={values}
+                        display={activeStep == 8}
                         tokenRecord={tokenRecord}
                     />
                     <div className="registration-input-form-controls">
@@ -142,7 +177,7 @@ export default function NewRegister({ auth, tokenRecord, credentials, categories
                         >
                             Back
                         </Button>
-                        { activeStep < 7 &&
+                        { activeStep < 8 &&
                             <Button 
                                 filled
                                 disabled={!currentStepInputValid()}
@@ -151,7 +186,7 @@ export default function NewRegister({ auth, tokenRecord, credentials, categories
                                 Next
                             </Button>
                         }
-                        { activeStep == 7 &&
+                        { activeStep == 8 &&
                             <Button
                                 filled
                                 onClick={handleSubmit}

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Notifications\Notifiable;
 use App\Models\UserMeta;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -14,8 +15,8 @@ class User extends Authenticatable {
     protected $fillable = [
         'first_name',
         'last_name',
-        'address',
-        'address2',
+        'address_one',
+        'address_two',
         'city',
         'state',
         'zip',
@@ -47,10 +48,24 @@ class User extends Authenticatable {
         return $this->userMeta()->where('type', 'sector');
     }
 
+    protected function isAdmin(): Attribute {
+        return new Attribute(
+            get: fn () => $this->type == 'admin'
+        );
+    }
+
+    protected function address(): Attribute {
+        return new Attribute(
+            get: fn () => $this->address_one . "\n" . $this->address_two
+        );
+    }
+
     protected $hidden = [
         'password',
         'remember_token',
     ];
+
+    protected $appends = ['address'];
 
     protected function casts(): array {
         return [

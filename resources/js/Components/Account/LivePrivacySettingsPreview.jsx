@@ -1,15 +1,19 @@
 import { prettifyDate } from '../../tools';
 import { transformCredentialsForPreview, transformSectorsForPreview, transformCategoriesForPreview } from '../../transformTools';
 
-export default function LivePrivacySettingsPreview({adminSettings, values, activeTab, credentials, sectors, categories}) {
+export default function LivePrivacySettingsPreview({ 
+    adminSettings, values, display, credentials, sectors, categories, displayRegistrationDate=true, displayRegistrationNumber=true 
+}) {
     const settingIsAllowed = field => {
-        const setting = adminSettings.find(setting => setting.key == field);
-        return setting.value == "true";
+        if(adminSettings !== null) {
+            const setting = adminSettings.find(setting => setting.key == field);
+            return setting.value == "true";
+        }
     }
 
     return (
                 <div className="privacy-live-preview-wrapper">
-                    <table className={`privacy-live-preview${activeTab !== 'privacySettings' ? ' display-none' : ''}`}>
+                    <table className={`privacy-live-preview${!display ? ' display-none' : ''}`}>
                         <thead>
                             <tr>
                                 <td>First Name</td>
@@ -25,8 +29,8 @@ export default function LivePrivacySettingsPreview({adminSettings, values, activ
                                 <td>Credentials</td>
                                 <td>Sectors</td>
                                 <td>Category</td>
-                                <td>Registration Date</td>
-                                <td>Registration #</td>
+                                { displayRegistrationDate ? <td>Registration Date</td> : ''}
+                                { displayRegistrationNumber ? <td>Registration #</td> : ''}
                             </tr>
                         </thead>
                         <tr>
@@ -51,17 +55,11 @@ export default function LivePrivacySettingsPreview({adminSettings, values, activ
                                             values.company
                                 }
                             </td>
-                            <td>
+                            <td style={{whiteSpace: 'pre-line'}}>
                                 {
                                     settingIsAllowed('address') ? 
                                         (values.privacy_settings.address ? '**PRIVATE**' : values.address) :
                                             values.address
-                                }<br />
-                                {
-                                    values.address2 !== '' &&
-                                    (settingIsAllowed('address2') ?
-                                        (values.privacy_settings.address2 ? '**PRIVATE**' : values.address2) :
-                                            values.address2)
                                 }
                             </td>
                             <td>
@@ -109,8 +107,8 @@ export default function LivePrivacySettingsPreview({adminSettings, values, activ
                             <td>{transformCredentialsForPreview(values.credentials, credentials)}</td>
                             <td>{transformSectorsForPreview(values.sectors, sectors)}</td>
                             <td>{transformCategoriesForPreview(values.categories, categories)}</td>
-                            <td>{prettifyDate(values.created_at)}</td>
-                            <td>{values.registration_number}</td>
+                            { displayRegistrationDate && <td>{prettifyDate(values.created_at)}</td>}
+                            { displayRegistrationNumber && <td>{values.registration_number}</td>}
                         </tr>
                     </table>
                 </div>

@@ -1,87 +1,39 @@
-export default function NewRegisterStepSeven({ values, display, tokenRecord }) {
+import rfdc from "rfdc";
+import ToggleSwitch from "../ToggleSwitch";
+
+export default function NewRegisterStepSeven({ values, setValues, display, adminSettings }) {
+    const toggle = setting => {        
+        setValues({
+            ...rfdc()(values),
+            privacy_settings: {
+                ...values.privacy_settings,
+                [setting]: !values.privacy_settings[setting]
+            }
+        });
+    }
+
+    console.log(adminSettings);
     
     return (
         <div className={!display ? 'display-none' : ''}>
-            <table>
+            Choose which fields you would like to be set as private and see live preview above. These settings may be changed later in account settings.    
+            <table style={{margin: 'auto', marginTop: '.75rem'}}>
                 <tbody>
-                    <tr>
-                        <td className="font-weight-bold">Name</td>
-                        <td>
-                            {tokenRecord.first_name} {tokenRecord.last_name}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className="font-weight-bold">Email</td>
-                        <td>
-                            {tokenRecord.email}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className="font-weight-bold">Address</td>
-                        <td>
-                            {values.address}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className="font-weight-bold">Address 2</td>
-                        <td>
-                            {values.address2}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className="font-weight-bold">City</td>
-                        <td>
-                            {values.city}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className="font-weight-bold">State</td>
-                        <td>
-                            {values.state}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className="font-weight-bold">Zip</td>
-                        <td>
-                            {values.zip}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className="font-weight-bold">Country</td>
-                        <td>
-                            {values.country}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className="font-weight-bold">Company</td>
-                        <td>
-                            {values.company}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className="font-weight-bold">Phone Number</td>
-                        <td>
-                            {values.phone_number}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className="font-weight-bold">Credentials</td>
-                        <td>
-                            {values.credentials.map(c => <>{c.label}<br /></>)}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className="font-weight-bold">Categories</td>
-                        <td>
-                            {values.categories.map(c => <>{c.label}<br /></>)}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className="font-weight-bold">Industry Sectors</td>
-                        <td>
-                            {values.sectors.map(c => <>{c.label}<br /></>)}
-                        </td>
-                    </tr>
+                    {
+                        adminSettings.map(setting => {
+                            return (
+                                <tr key={setting}>
+                                    <td>{setting.replace("_", " ")}</td>
+                                    <td>
+                                        <ToggleSwitch 
+                                            checked={values.privacy_settings[setting]}
+                                            onChange={() => toggle(setting)}
+                                        />
+                                    </td>
+                                </tr>
+                            )
+                        })
+                    }
                 </tbody>
             </table>
         </div>

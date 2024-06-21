@@ -113,7 +113,7 @@ export default function NewAccount({ auth, user, credentials, categories, sector
                 transformedDataHasLoaded() && 
                     values.privacy_settings && 
                         <LivePrivacySettingsPreview 
-                            activeTab={activeTab} 
+                            display={activeTab=='privacySettings'}
                             adminSettings={adminSettings} 
                             values={values}
                             credentials={credentials}

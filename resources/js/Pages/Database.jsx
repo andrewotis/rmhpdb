@@ -8,9 +8,66 @@ export default function Database({ auth, users, credentials, sectors, categories
     const [currentPage, setCurrentPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(20);
     const [filter, setFilter] = useState('');
+    const [sortDirection, setSortDirection] = useState({
+        first_name: 'asc',
+        last_name: 'asc',
+        company: 'asc',
+        address: 'asc',
+        city: 'asc',
+        state: 'asc',
+        zip: 'asc',
+        country: 'asc',
+        phone: 'asc',
+        email: 'asc',
+        credentials: 'asc',
+        sectors: 'asc',
+        categories: 'asc',
+        registration_date: 'asc',
+        registration_number: 'asc',
+    });
 
     const sortResults = (by) => {
-        const arr = [...sorted].sort((a, b) => a[by].localeCompare(b[by]));
+        let arr = [];
+        if(sortDirection[by] == 'asc') {
+            switch(by) {
+                case 'registration_number':
+                    arr = [...users].sort((a, b) => a[by] - b[by]);
+                    break;
+                case 'credentials':
+                    arr = [...users].sort((a, b) => formatCredentials(a[by]).localeCompare(formatCredentials(b[by])));
+                    break;
+                case 'sectors':
+                    arr = [...users].sort((a, b) => formatSectors(a[by]).localeCompare(formatSectors(b[by])));
+                    break;
+                case 'categories':
+                    arr = [...users].sort((a, b) => formatCategories(a[by]).localeCompare(formatCategories(b[by])));
+                    break;
+                default:
+                    arr = [...users].sort((a, b) => a[by].localeCompare(b[by]));
+                    break;
+            }
+            setSortDirection({...sortDirection, [by] : 'desc'})
+        } else {
+            switch(by) {
+                case 'registration_number':
+                    arr = [...users].sort((b, a) => a[by] - b[by]);
+                    break;
+                case 'credentials':
+                    arr = [...users].sort((b, a) => formatCredentials(a[by]).localeCompare(formatCredentials(b[by])));
+                    break;
+                case 'sectors':
+                    arr = [...users].sort((b, a) => formatSectors(a[by]).localeCompare(formatSectors(b[by])));
+                    break;
+                case 'categories':
+                    arr = [...users].sort((b, a) => formatCategories(a[by]).localeCompare(formatCategories(b[by])));
+                    break;
+                default:
+                    arr = [...users].sort((b, a) => a[by].localeCompare(b[by]));
+                    break;
+            }
+            setSortDirection({...sortDirection, [by] : 'asc'})
+        }
+        setFiltered(arr);
         setSorted(arr);
     }
 
@@ -99,21 +156,21 @@ export default function Database({ auth, users, credentials, sectors, categories
                 <table className="database-table">
                     <thead>
                         <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Company</th>
-                            <th>Address</th>
-                            <th>City</th>
-                            <th>State</th>
-                            <th>Zip</th>
-                            <th>Country</th>
-                            <th>Phone</th>
-                            <th>Email</th>
-                            <th>Credentials</th>
-                            <th>Sectors</th>
-                            <th>Category</th>
-                            <th>Registration Date</th>
-                            <th>Registration #</th>
+                            <th className="cursor-pointer" onClick={() => sortResults('first_name')}>First Name</th>
+                            <th className="cursor-pointer" onClick={() => sortResults('last_name')}>Last Name</th>
+                            <th className="cursor-pointer" onClick={() => sortResults('company')}>Company</th>
+                            <th className="cursor-pointer" onClick={() => sortResults('address')}>Address</th>
+                            <th className="cursor-pointer" onClick={() => sortResults('city')}>City</th>
+                            <th className="cursor-pointer" onClick={() => sortResults('state')}>State</th>
+                            <th className="cursor-pointer" onClick={() => sortResults('zip')}>Zip</th>
+                            <th className="cursor-pointer" onClick={() => sortResults('country')}>Country</th>
+                            <th className="cursor-pointer" onClick={() => sortResults('phone_number')}>Phone</th>
+                            <th className="cursor-pointer" onClick={() => sortResults('email')}>Email</th>
+                            <th className="cursor-pointer" onClick={() => sortResults('credentials')}>Credentials</th>
+                            <th className="cursor-pointer" onClick={() => sortResults('sectors')}>Sectors</th>
+                            <th className="cursor-pointer" onClick={() => sortResults('categories')}>Category</th>
+                            <th className="cursor-pointer" onClick={() => sortResults('created_at')}>Registration Date</th>
+                            <th className="cursor-pointer" onClick={() => sortResults('registration_number')}>Registration #</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -124,10 +181,7 @@ export default function Database({ auth, users, credentials, sectors, categories
                                         <td>{user.first_name}</td>
                                         <td>{user.last_name}</td>
                                         <td>{user.company}</td>
-                                        <td>
-                                            { user.address }<br />
-                                            { user.address2 !== '' ? <>{user.address2}<br /></> : ''}
-                                        </td>
+                                        <td style={{whiteSpace: 'pre-line'}}>{ user.address }</td>
                                         <td>{ user.city }</td>
                                         <td>{ user.state }</td>
                                         <td>{ user.zip }</td>

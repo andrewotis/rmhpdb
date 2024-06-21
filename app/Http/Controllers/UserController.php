@@ -17,6 +17,7 @@ use App\Models\Sector;
 use App\Http\SendEmail;
 use App\Models\RegistrationToken;
 use Carbon\Carbon;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\Redirect;
 
 class UserController extends Controller {
@@ -26,7 +27,7 @@ class UserController extends Controller {
         $new = $request->input('new');
 
         // user values
-        $keys = [ 'first_name', 'last_name', 'company', 'address', 'address2', 'city', 'state', 'zip', 'country', 'phone_number', 'email' ];
+        $keys = [ 'first_name', 'last_name', 'company', 'address_one', 'address_two', 'city', 'state', 'zip', 'country', 'phone_number', 'email' ];
         $user_modified = false;
         foreach($keys as $key) {
             if($old[$key] !== $new[$key]) $user_modified = true;
@@ -35,7 +36,6 @@ class UserController extends Controller {
         $user = Auth::user();
 
         if($user_modified) {
-
             // make sure they're not updating to an email address that already exists
             $check = User::where('id', "!=", $user->id)->where('email', $new['email'])->get();
             if($check->count()) {
@@ -46,8 +46,8 @@ class UserController extends Controller {
                 'first_name' => $new['first_name'],
                 'last_name' => $new['last_name'],
                 'company' => $new['company'],
-                'address' => $new['address'],
-                'address2' => $new['address2'],
+                'address_one' => $new['address_one'],
+                'address_two' => $new['address_two'],
                 'city' => $new['city'],
                 'state' => $new['state'],
                 'zip' => $new['zip'],
@@ -182,7 +182,8 @@ class UserController extends Controller {
                 'tokenRecord' => $token_record,
                 'credentials' => Credential::all(),
                 'categories' => HazardCategory::all(),
-                'sectors' => Sector::all()
+                'sectors' => Sector::all(),
+                'adminSettings' => AdminSetting::where('type', 'privacy')->get(),
             ]);
         }
     }
@@ -194,12 +195,13 @@ class UserController extends Controller {
         $credentials = $request->input('credentials');
         $categories = $request->input('categories');
         $sectors = $request->input('sectors');
+        $privacy_settings = $request->input('privacy_settings');
 
         $user = User::create([
             'first_name' => $token_record->first_name,
             'last_name' => $token_record->last_name,
-            'address' => $input['address'],
-            'address2' => $input['address2'],
+            'address_one' => $input['address_one'],
+            'address_two' => $input['address_two'],
             'registration_number' => $maxreg + 1,
             'city' => $input['city'],
             'state' => $input['state'],
@@ -241,6 +243,18 @@ class UserController extends Controller {
             ]);
         }
 
+        // add privacy settings
+        foreach($privacy_settings as $privacy_setting => $enabled) {
+            if($enabled) {
+                UserMeta::create([
+                    'user_id' => $user->id,
+                    'type' => 'privacy_setting',
+                    'key' => $privacy_setting,
+                    'value' => 'true'
+                ]);
+            }
+        }
+
         // delete the registration token
         $token_record->delete();
 
@@ -250,25 +264,6 @@ class UserController extends Controller {
     public function checkEmail(Request $request) {
         $user = User::where('email', $request->input('email'))->get();
         return ($user->count() == 0) ? 1 : 0;
-    }
-
-    public function ideaTwo() {
-        $query = User::with('privacySettings')
-            ->with('credentials')
-            ->with('sectors')
-            ->with('categories')
-            ->where('active', 1)
-            ->where('type', 'registered_mhp');
-
-            $users = $this->hidePrivateFields($query->get()->toArray());
-
-            return Inertia::render('IdeaTwo', [
-                'auth' => Auth::user(),
-                'users' => $users,
-                'categories' => HazardCategory::all(),
-                'sectors' => Sector::all(),
-                'credentials' => Credential::all()
-            ]);
     }
 
     public function browse() {
@@ -311,29 +306,67 @@ class UserController extends Controller {
     }
 
     public function search(Request $request) {
-        $query = User::with('privacySettings')
-            ->with('credentials')
-            ->with('sectors')
-            ->with('categories')
+        $query = User::select(["users.*"])
+            ->with(['privacySettings', 'credentials', 'sectors', 'categories'])
             ->where('active', 1)
-            ->where('type', 'registered_mhp');
+            ->where('users.type', 'registered_mhp');
         
         if($request->input('first_name') != null) {
-            $query->where('first_name', 'like', '%' . $request->input('first_name') . '%');
+            $query->where('first_name', 'like', '%' . $request->input('first_name') . '%')
+                ->leftJoin('user_meta as um', function(JoinClause $join) {
+                    $join
+                        ->on('users.id', '=', 'um.user_id')
+                        ->where('um.type', '=', 'privacy_setting')
+                        ->where('um.key', '=', 'first_name')
+                        ->where('um.value', '=', 'true');
+                })
+                ->whereNull('um.id');
         }
         if($request->input('last_name') != null) {
-            $query->where('last_name', 'like', '%' . $request->input('last_name') . '%');
+            $query->where('last_name', 'like', '%' . $request->input('last_name') . '%')
+                ->leftJoin('user_meta as um1', function(JoinClause $join) {
+                    $join
+                        ->on('users.id', '=', 'um1.user_id')
+                        ->where('um1.type', '=', 'privacy_setting')
+                        ->where('um1.key', '=', 'last_name')
+                        ->where('um1.value', '=', 'true');
+                })
+                ->whereNull('um1.id');
         }
         if($request->input('city') != null) {
-            $query->where('city', 'like', '%' . $request->input('city') . '%');
+            $query->where('city', 'like', '%' . $request->input('city') . '%')
+                ->leftJoin('user_meta as um2', function(JoinClause $join) {
+                    $join
+                        ->on('users.id', '=', 'um2.user_id')
+                        ->where('um2.type', '=', 'privacy_setting')
+                        ->where('um2.key', '=', 'city')
+                        ->where('um2.value', '=', 'true');
+                })
+                ->whereNull('um2.id');
         }
         if($request->input('state') != null) {
-            $query->where('state', 'like', '%' . $request->input('state') . '%');
+            $query->where('state', 'like', '%' . $request->input('state') . '%')
+                ->leftJoin('user_meta as um3', function(JoinClause $join) {
+                    $join
+                        ->on('users.id', '=', 'um3.user_id')
+                        ->where('um3.type', '=', 'privacy_setting')
+                        ->where('um3.key', '=', 'state')
+                        ->where('um3.value', '=', 'true');
+                })
+                ->whereNull('um3.id');
         }
         if($request->input('country') != null) {
-            $query->where('country', 'like', '%' . $request->input('country') . '%');
+            $query->where('country', 'like', '%' . $request->input('country') . '%')
+                ->leftJoin('user_meta as um4', function(JoinClause $join) {
+                    $join
+                        ->on('users.id', '=', 'um4.user_id')
+                        ->where('um4.type', '=', 'privacy_setting')
+                        ->where('um4.key', '=', 'country')
+                        ->where('um4.value', '=', 'true');
+                })
+                ->whereNull('um4.id');
         }
-        
+
         $users = $this->hidePrivateFields($query->get()->toArray());
 
         if(count($users) == 0) {

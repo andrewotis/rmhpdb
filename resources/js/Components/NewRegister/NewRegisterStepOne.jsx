@@ -12,6 +12,21 @@ export default function NewRegisterStepOne({ values, handleChange, display, setV
         city: false
     });
 
+    const handleAddressChange = e => {
+        let address = "";
+        if(e.target.id == 'address_one') {
+            address = values.address_two !== '' ? e.target.value + "\n" + values.address_two : e.target.value;
+        } else if(e.target.id == 'address_two') {
+            address = e.target.value !== '' ? values.address_one + "\n" + e.target.value : values.address_one;
+        }
+        setValues({
+            ...values, 
+            [e.target.id] : e.target.value,
+            address: address
+        });
+    };
+
+
     useEffect(() => {
         window.setTimeout( () => {
             document.querySelector('.footer').scrollIntoView();
@@ -21,16 +36,16 @@ export default function NewRegisterStepOne({ values, handleChange, display, setV
     return (
         <div className={!display ? 'display-none' : ''}>
             <FloatingLabelInput 
-                name="address"
+                name="address_one"
                 label="Address"
-                value={values.address}
-                onChange={handleChange}
+                value={values.address_one}
+                onChange={handleAddressChange}
             />
             <FloatingLabelInput 
-                name="address2"
+                name="address_two"
                 label="Address2"
-                value={values.address2}
-                onChange={handleChange}
+                value={values.address_two}
+                onChange={handleAddressChange}
             />
             <select 
                 name="country" 

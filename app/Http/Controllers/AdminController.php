@@ -141,6 +141,7 @@ class AdminController extends Controller {
     }
 
     public function addRecipient(Request $request) {
+        Log::error("We made it to addRecipient...");
         $this->checkAdmin();
 
         // check if address is already there

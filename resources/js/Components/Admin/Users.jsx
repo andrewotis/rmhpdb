@@ -239,8 +239,10 @@ export default function Users({ display, users, auth, setActiveTab, credentials,
             </Modal>
             <main className={`content${!display ? ' display-none' : ''}`}>
                 <h1>Users</h1>
-                <p>In the actions column, use the magnifier icon to view a user's details, the lock icon to reset a user's password, and the x icon to disable their account. Disabled accounts will 
-                    still be in the system but the user can not log in and will not be displayed in the public database.</p>
+                <p>In the actions column, use the magnifier icon to view a user's details. The x icon disables a user's account. Disabled accounts will 
+                    still be in the system but the user can not log in and will not be displayed in the public database. In case a user forgets their password AND loses access
+                    to their email account, use the lock icon to reset their password. A strong temporary password will be generated for them and displayed just above the table below.
+                </p>
                 <button
                     onClick={() => setActiveTab('createAdmin')}
                 >

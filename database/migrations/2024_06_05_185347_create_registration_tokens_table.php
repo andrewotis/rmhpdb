@@ -12,6 +12,7 @@ return new class extends Migration {
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email');
+            $table->string('type');     // admin or registered_mhp
             $table->string('token');
             $table->timestamp('created_at');
         });

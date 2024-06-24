@@ -21,7 +21,7 @@ class SendEmail {
             'FromEmail' => "admin@andrew-otis.com",
             'FromName' => "Administrator",
             'Subject' => "Please verify your email for RMHPdb registration!",
-            'MJ-TemplateID' => 6028553,
+            'MJ-TemplateID' => env('MAILJET_TEMPLATE_ID_VERIFY_EMAIL'),
             'MJ-TemplateLanguage' => true,
             'Vars' => json_decode(json_encode($vars), true),
             'Recipients' => [
@@ -45,7 +45,7 @@ class SendEmail {
             'FromEmail' => "admin@andrew-otis.com",
             'FromName' => "Administrator",
             'Subject' => "Password reset link for RMHPdb",
-            'MJ-TemplateID' => 6070504,
+            'MJ-TemplateID' => env('MAILJET_TEMPLATE_ID_PASSWORD_RESET'),
             'MJ-TemplateLanguage' => true,
             'Vars' => json_decode(json_encode($vars), true),
             'Recipients' => [
@@ -58,27 +58,24 @@ class SendEmail {
         return $response->success() ? true : false;
     }
 
-    public static function sendFeedbackEmail($input) {
+    public static function sendFeedbackEmail($input, $recipients) {
         $mj = Mailjet::getClient();
+
         $vars = [
             'name' => $input['name'],
-            'phone' => array_key_exists('phone', $input) ? $input['phone'] : '',
+            'phone' => $input['phoneNumber'] == null ? '' : $input['phoneNumber'],
             'email' => $input['email'],
-            'message' => $input['message']
+            'message' => $input['message'] == null ? '' : $input['message']
         ];
 
-        //$recipients = $this->getRecipients();
-            $body = [
-                'FromEmail' => "admin@andrew-otis.com",
-                'FromName' => "Administrator",
-                'Subject' => "Automated Message from andrew-otis.com",
-                'MJ-TemplateID' => 6017725,
-                'MJ-TemplateLanguage' => true,
-                'Vars' => json_decode(json_encode($vars), true),
-                'Recipients' => [
-                    ['Email' => 'andrew.otis@gmail.com'],
-                //  ['Email' => 'deletersoftware@gmail.com'],
-                ]
+        $body = [
+            'FromEmail' => "admin@andrew-otis.com",
+            'FromName' => "Administrator",
+            'Subject' => "Automated Message from andrew-otis.com",
+            'MJ-TemplateID' => env('MAILJET_TEMPLATE_ID_FEEDBACK'),
+            'MJ-TemplateLanguage' => true,
+            'Vars' => json_decode(json_encode($vars), true),
+            'Recipients' => $recipients
             ];
 
         $response = $mj->post(Resources::$Email, ['body' => $body]);

@@ -243,7 +243,7 @@ nav .fa-rm {
 .registration-form input, .registration-form textarea {
     width: clamp(120px, 50vw, 420px);
     height: 2.5rem;
-    padding: 0 1.25rem;
+    /* padding: 0 1.25rem;*/
     border: 1px solid #000;
     border-radius: 2px;
     margin: 0.625rem auto;
@@ -267,22 +267,22 @@ nav .fa-rm {
 }
 
 .registration-form input:focus + .form__label{
-    transform: translateY(-4.50rem) scale(1);
+    transform: translateY(-4.75rem) scale(1);
     color: #000;
 }
 
 .registration-form textarea:focus + .form__label{
-    transform: translateY(-4.50rem) scale(1);
+    transform: translateY(-4.75rem) scale(1);
     color: #000;
 }
 
 .registration-form input:focus + .form__label, .registration-form input:not(:placeholder-shown) + .form__label {
-    transform: translateY(-4.50rem) scale(1);
+    transform: translateY(-4.75rem) scale(1);
     color: #000;
 }
 
 .registration-form textarea:focus + .form__label, .registration-form textarea:not(:placeholder-shown) + .form__label {
-    transform: translateY(-8.7rem) scale(1);
+    transform: translateY(-9.2rem) scale(1);
     color: #000;
 }
 
@@ -296,7 +296,7 @@ nav .fa-rm {
 
 .registration-form input::placeholder, .registration-form textarea::placeholder {
     display: none;
-    color: transparent;        
+    color: transparent;     
 /* Prevents users from highlighting the placeholder. */
     -webkit-user-select: none; /* Safari */
     -ms-user-select: none; /* IE 10 and IE 11 */
@@ -523,6 +523,7 @@ nav .fa-rm {
     align-items: top;
     vertical-align: top;
     width: 100%;
+    border-collapse: collapse;
 }
 
 .database-table tr:nth-child(odd) {
@@ -552,6 +553,9 @@ nav .fa-rm {
 .database-table-controls {
     font-size: 10pt;
     height: 30px;
+    div {
+        box-sizing: border-box;
+    }
 }
 
 .database-table-controls .col {

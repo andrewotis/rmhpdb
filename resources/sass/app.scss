@@ -9,10 +9,17 @@ $error: #880808;
 $blue: #0049fb;
 $purple: #795cce;
 
+/* DARK MODE */
+$dm1: #007acc;
+$dm2: #3e3e42;
+$dm3: #2d2d30;
+$dm4: #252526;
+$dm5: #1e1e1e;
+
 /* BREAKPOINTS */
 $tablet-breakpoint: 768px;
 
-@import '~bootstrap/scss/bootstrap';
+//@import '~bootstrap/scss/bootstrap';
 // @import './../css/app';
 @import './../css/layout4';
 @import 'registration-form';
@@ -24,6 +31,8 @@ $tablet-breakpoint: 768px;
 @import 'login-controls';
 @import 'forgot-password';
 @import 'utilities';
+@import 'admin';
+@import 'modal';
 
 .text-align-center {
     text-align: center;

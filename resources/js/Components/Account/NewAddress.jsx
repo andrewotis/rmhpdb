@@ -15,10 +15,10 @@ export default function NewAddress({display, values, setValues}) {
 
     useEffect(() => {      // if values are set for country, state, city, select them in the dropdowns
         let countryIsoCode, stateIsoCode = "";
-        if(values.country !== '') {     // find the isoCode for the recorded country and setSelectedCountryIsoCode
+        if(values.country !== '' && values.country !== null) {     // find the isoCode for the recorded country and setSelectedCountryIsoCode
             countryIsoCode = Country.getAllCountries().find(c => c.name == values.country).isoCode;
         }
-        if(values.state !== "") {
+        if(values.state !== "" && values.state !== null) {
             stateIsoCode = State.getStatesOfCountry(countryIsoCode).find(s => s.name == values.state).isoCode;
         }
         setSelectedStateIsoCode(stateIsoCode);

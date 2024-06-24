@@ -14,6 +14,7 @@ use App\Models\Sector;
 use App\Models\User;
 use Database\Seeders\StatesAndCities;
 use App\Http\Controllers\PasswordResetController;
+use App\Http\PasswordGenerator;
 
 Route::get('/', function() {
     return Inertia::render('Home', [
@@ -36,26 +37,24 @@ Route::get('/about', function() {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/account', function() {
-        $user = User::where('id', Auth::user()->id)->with(['credentials', 'privacySettings', 'sectors', 'categories'])->first();
-        
-        return Inertia::render('NewAccount', [
-            'auth' => Auth::user(),
-            'user' => $user,
-            'credentials' => Credential::all(),
-            'categories' => HazardCategory::all(),
-            'sectors' => Sector::all(),
-            'adminSettings' => AdminSetting::where('type', 'privacy')->get(),
-        ]);
-    });
+    Route::get('/account', [UserController::class, 'viewAccountPage']);    
+    Route::put('/account', [UserController::class, 'update']);
     
-    Route::put('/account', [UserController::class, 'update']);    
-    Route::post('/admin/feedback', [AdminController::class, 'addRecipient']);
-    Route::delete('/admin/feedback/{email?}', [AdminController::class, 'deleteRecipient']);
-    Route::post('/admin/credentials', [AdminController::class, 'addCredential']);
-    Route::post('/admin', [AdminController::class, 'updateSettings']);
+
     Route::get('/admin', [AdminController::class, 'viewAdminPage']);
+    Route::put('/admin/password/reset/{user_id}', [AdminController::class, 'resetUserPassword']);
+    Route::put('/admin/status/update/{user_id}', [AdminController::class, 'updateUserStatus']);
+    Route::post('/admin/create', [AdminController::class, 'createAdmin']);
+    Route::post('/admin/feedback', [AdminController::class, 'addRecipient']);
+    Route::delete('/admin/feedback/{id}', [AdminController::class, 'deleteRecipient']);
+    Route::post('/admin/privacy', [AdminController::class, 'updatePrivacySettings']);
+    Route::post('/admin/credential', [AdminController::class, 'addCredential']);
+    Route::post('/admin/sector', [AdminController::class, 'addSector']);
+    Route::post('/admin/category', [AdminController::class, 'addCategory']);
+    Route::put('/admin/account', [AdminController::class, 'updateAdminAccount']);
 });
+
+Route::post('/admin/register', [AdminController::class, 'registerAdmin']);
 
 Route::post('/users', [UserController::class, 'store']);
 Route::post('/account/email', [UserController::class, 'checkEmail']);

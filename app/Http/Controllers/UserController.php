@@ -19,8 +19,26 @@ use App\Models\RegistrationToken;
 use Carbon\Carbon;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller {
+    public function viewAccountPage() {
+        $user = User::where('id', Auth::user()->id)->with(['credentials', 'privacySettings', 'sectors', 'categories'])->first();
+        
+        if($user->is_admin) {
+            return redirect('/admin');
+        }
+
+        return Inertia::render('NewAccount', [
+            'auth' => Auth::user(),
+            'user' => $user,
+            'credentials' => Credential::all(),
+            'categories' => HazardCategory::all(),
+            'sectors' => Sector::all(),
+            'adminSettings' => AdminSetting::where('type', 'privacy')->get(),
+        ]);
+    }
+
     public function update(Request $request) {
         // what has changed?
         $old = $request->input('old');
@@ -146,6 +164,7 @@ class UserController extends Controller {
                 'first_name' => $request->input('first_name'),
                 'last_name' => $request->input('last_name'),
                 'email' => $request->input('email'),
+                'type' => 'registered_mhp',
                 'token' => md5($request->input('first_name') . ' ' . $request->input('last_name') . ' ' . $request->input('email') . time()),
                 'created_at' => Carbon::now()
             ]);
@@ -176,15 +195,22 @@ class UserController extends Controller {
         if($diff > 12) {
             return redirect('/')->withErrors(['error' => 'Registration token has expired. Please restart your registration.']);
         } else {
-            return Inertia::render('NewRegister', [
-                'auth' => Auth::user(),
-                'initial' => false,
-                'tokenRecord' => $token_record,
-                'credentials' => Credential::all(),
-                'categories' => HazardCategory::all(),
-                'sectors' => Sector::all(),
-                'adminSettings' => AdminSetting::where('type', 'privacy')->get(),
-            ]);
+            if($token_record->type == 'admin') {
+                return Inertia::render('AdminRegister', [
+                    'auth' => Auth::user(),
+                    'tokenRecord' => $token_record
+                ]);
+            } else if($token_record->type == 'registered_mhp') {
+                return Inertia::render('NewRegister', [
+                    'auth' => Auth::user(),
+                    'initial' => false,
+                    'tokenRecord' => $token_record,
+                    'credentials' => Credential::all(),
+                    'categories' => HazardCategory::all(),
+                    'sectors' => Sector::all(),
+                    'adminSettings' => AdminSetting::where('type', 'privacy')->get(),
+                ]);   
+            }
         }
     }
 

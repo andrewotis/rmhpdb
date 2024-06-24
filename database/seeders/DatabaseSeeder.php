@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder {
         $this->addHazardCategories();
         $this->addSectors();
         $this->addUserMetas();
+        $this->addFeedbackRecipients();
     }
 
     public function addUserMetas() {

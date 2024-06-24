@@ -20,6 +20,7 @@
     "dependencies": {
         "@inertiajs/inertia-react": "^0.8.1",
         "@inertiajs/react": "^1.1.0",
+        "boxicons": "^2.1.4",
         "country-state-city": "^3.2.1",
         "email-validator": "^2.0.4",
         "password-validator": "^5.3.0",

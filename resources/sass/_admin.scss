@@ -1,0 +1,263 @@
+.admin {
+	display: flex;
+	min-height: 100vh;
+}
+
+.menu-toggle {
+	display: none;
+	position: fixed;
+	top: 2rem;
+	right: 2rem;
+	width: 60px;
+	height: 60px;
+	border-radius: 99px;
+	background-color: #2e3047;
+	cursor: pointer;
+}
+
+.hamburger {
+	position: relative;
+	top: calc(50% - 2px);
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 32px;
+}
+
+.hamburger > span,
+.hamburger > span::before,
+.hamburger > span::after {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 4px;
+  border-radius: 99px;
+  background-color: #FFF;
+  transition-duration: .25s;
+}
+
+.hamburger > span::before {
+  content: '';
+  top: -8px;
+}
+.hamburger > span::after {
+  content: '';
+  top: 8px;
+}
+.menu-toggle.is-active .hamburger > span {
+  transform: rotate(45deg);
+}
+.menu-toggle.is-active .hamburger > span::before {
+  top: 0;
+  transform: rotate(0deg);
+}
+.menu-toggle.is-active .hamburger > span::after {
+  top: 0;
+  transform: rotate(90deg);
+}
+
+.sidebar {
+	flex: 1 1 0;
+	max-width: 300px;
+	padding: 2rem 1rem;
+	background-color: #2e3047;
+
+    nav {
+        display: unset;
+    }
+
+    h2 {
+        color: #fff;
+        font-size: 0.6rem;
+        font-weight: unset;
+    }
+
+    h3 {
+        color: $darkergrey;
+        font-size: 1rem;
+        text-transform: uppercase;
+        margin-bottom: 0.5em;
+    }
+
+    .menu {
+        margin: 0 -1rem;
+
+        .menu-item {
+            display: block;
+            padding: 1em;
+            color: #FFF;
+            text-decoration: none;
+            transition: 0.2s linear;
+            cursor: pointer;
+
+            &:hover, &.is-active {
+                color: #007acc;
+                border-right: 5px solid #007acc;
+            }
+
+            &:hover {
+                border-right: 5px solid #007acc;
+            }
+        }
+    }
+}
+
+.content {
+	flex: 1 1 0;
+	padding: 2rem;
+    background-color: #3E3E42;
+    
+    button {
+        margin-bottom: 1rem;
+        margin-top: 1rem;
+        padding: 5px;
+    }
+
+    h1 {
+        color: #007ACC;
+        font-size: 2.5rem;
+    }
+
+    p {
+        color: #fff;
+    }
+
+    @media(max-width: $tablet-breakpoint) {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 1024px) {
+	.sidebar {
+		max-width: 200px;
+	}
+}
+
+@media (max-width: 768px) {
+	.menu-toggle {
+		display: block;
+	}
+	.content {
+		padding-top: 8rem;
+	}
+	.sidebar {
+		position: fixed;
+		top: 0;
+		left: -350px;
+		height: 100vh;
+		width: 100%;
+		max-width: 300px;
+		transition: .3s linear;
+	}
+
+	.sidebar.is-active {
+		left: 0;
+	}
+}
+
+.admin-users-table {
+    border-collapse: collapse;
+    width: 100%;
+
+    thead tr {
+        text-transform: uppercase;
+        background-color: $dm1;
+    }
+
+    tbody tr:nth-child(odd) {
+        background-color: $darkergrey;
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #fff;
+
+    }
+
+    input {
+        width: 95%;
+    }
+
+    td {
+        padding: .25rem;
+        a {
+            color: $dm1;
+        }
+    }
+
+    @media(max-width: $tablet-breakpoint) {
+        font-size: 8pt;
+    }
+
+    @media(max-width: 1200px) {
+        tr td:nth-child(1) {
+            display: none;
+        }
+        tr td:nth-child(4) {
+            display: none;
+        }
+        tr td:nth-child(5) {
+            display: none;
+        }
+        tr td:nth-child(6) {
+            display: none;
+        }
+        tr td:nth-child(7) {
+            display: none;
+        }
+    }
+}
+
+.admin-privacy-settings-table {
+    margin-top: 2rem;
+    color: #fff;
+    border-collapse: collapse;
+
+    input:checked + .slider {
+        background-color: $dm1;
+    }
+    td {
+        border: 1px dashed #fff;
+        padding: 10px;
+    }
+}
+
+.admin-registration {
+    background-color: $dm2;
+    height: 100vh;
+    width: 100vw;
+    padding: 1rem;
+
+    @media(max-width: $tablet-breakpoint) {
+        padding: 0;
+    }
+
+    .admin-registration-table {
+        color: $white;
+        width: 50vw;
+        margin: auto;
+        border-collapse: collapse;
+
+        td {
+            padding: 10px;
+
+            &:first-child {
+                width: 200px;
+            }
+
+            input {
+                width: 100%;
+            }
+        }
+
+        button {
+            padding: 5px;
+        }
+
+        thead tr {
+            background-color: $dm1;
+        }
+
+        @media(max-width: $tablet-breakpoint) {
+            width: 90vw;
+        }
+    }
+}

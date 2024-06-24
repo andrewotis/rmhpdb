@@ -3,8 +3,11 @@ import { router, usePage } from '@inertiajs/react';
 import { validate } from 'email-validator';
 import LayoutFour from '../Layouts/LayoutFour';
 import Button from '../Components/Button';
+import Flash from '../Components/Flash';
 
 export default function NewContact({auth}) {
+    const { errors } = usePage().props;
+    const { flash } = usePage().props;
     const [values, setValues] = useState({
         name: '',
         email: '',
@@ -22,11 +25,13 @@ export default function NewContact({auth}) {
     }
 
     const inputValid = _ => {
-        return validate(values.email) && name.length > 0 && message.length > 0;
+        return validate(values.email) && values.name.length > 0 && values.message.length > 0;
     }
 
     return (
         <LayoutFour title="Contact" auth={auth}>
+            { flash.message && <Flash type="success" message={flash.message}/> }
+            { errors.error && <Flash type="error" message={errors.error}/> }
             <div className="registration-container">
                 <div className="cta-form">
                     <p>Questions? Feedback? Concerns? Let us know!</p>
@@ -40,7 +45,7 @@ export default function NewContact({auth}) {
                         value={values.name}
                         onChange={handleChange}
                     />
-                    <label for="name" className="form__label">Name</label>
+                    <label htmlFor="name" className="form__label">Name</label>
                     <input 
                         type="text" 
                         placeholder="Email Address" 
@@ -49,7 +54,7 @@ export default function NewContact({auth}) {
                         value={values.email}
                         onChange={handleChange}
                     />
-                    <label for="email" className="form__label">Email Address</label>
+                    <label htmlFor="email" className="form__label">Email Address</label>
                     <input 
                         type="text" 
                         placeholder="Verify Email" 
@@ -58,7 +63,7 @@ export default function NewContact({auth}) {
                         value={values.verifyEmail}
                         onChange={handleChange}
                     />
-                    <label for="verifyEmail" className="form__label hyde">Verify Email</label>
+                    <label htmlFor="verifyEmail" className="form__label hyde">Verify Email</label>
                     <input 
                         type="text" 
                         placeholder="Phone Number" 
@@ -67,7 +72,7 @@ export default function NewContact({auth}) {
                         value={values.phoneNumber}
                         onChange={handleChange}
                     />
-                    <label for="phoneNumber" className="form__label">Phone Number</label>
+                    <label htmlFor="phoneNumber" className="form__label">Phone Number</label>
                     <textarea 
                         placeholder="Message"
                         className="form__input"
@@ -75,11 +80,11 @@ export default function NewContact({auth}) {
                         value={values.message}
                         onChange={handleChange}
                     />
-                    <label for="phoneNumber" className="form__label">Message</label>
+                    <label htmlFor="phoneNumber" className="form__label">Message</label>
                     <Button 
                         filled
-                        disabled={!inputValid}
-                        onClick={inputValid ? handleSubmit : undefined}
+                        disabled={!inputValid()}
+                        onClick={inputValid() ? handleSubmit : undefined}
                     >
                         Send
                     </Button>

@@ -13,11 +13,11 @@ export default function FeedbackForm({ display, adminSettings }) {
     const { flash } = usePage().props;
 
     const handleSubmit = _ => {
-        router.post("/admin/feedback/", {email: email});
+        // router.post("/admin/feedback/", {email: email});
     }
 
     const handleDelete = _ => {
-        //router.delete(`/admin/feedback/${activeSetting.id}`);
+        router.delete(`/admin/feedback/${activeSetting.id}`);
         setShowModal(false);
     }
 

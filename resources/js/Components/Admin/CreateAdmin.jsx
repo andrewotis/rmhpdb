@@ -18,7 +18,7 @@ export default function CreateAdmin({ display, setActiveTab }) {
     }
 
     const handleSubmit = _ => {
-        router.post(`/admin/create/`, values);
+        router.post("/admin/create/", values);
     }
 
     const inputValid = _ => {

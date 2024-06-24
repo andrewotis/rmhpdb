@@ -30,7 +30,7 @@ export default function CreateAdmin({ display, setActiveTab }) {
     return (
         <>
             <main className={`content${!display ? ' display-none' : ''}`}>
-                <h1><span onClick={() => setActiveTab('users')}>Users</span> > Create Admin</h1>
+                <h1><span onClick={() => setActiveTab('users')}>Users</span>Create Admin</h1>
                 <p>Create a new administrative account.</p>
 
                 { flash.message && <div style={{backgroundColor: "#fff"}}><Flash type="success" message={flash.message}/></div> }

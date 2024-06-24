@@ -12,7 +12,8 @@ export default function FeedbackForm({ display, adminSettings }) {
     const { errors } = usePage().props;
     const { flash } = usePage().props;
 
-    const handleSubmit = _ => {
+    const handleSubmit = e => {
+        e.preventDefault();
         router.post("/admin/feedback/", {email: email});
     }
 

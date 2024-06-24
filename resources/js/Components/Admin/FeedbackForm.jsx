@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { router, usePage, Link } from '@inertiajs/react';
+import { useState } from "react";
+import { router, usePage } from '@inertiajs/react';
 import { validate } from 'email-validator';
 import Flash from "../Flash";
 import Modal from "../Modal";
@@ -17,7 +17,7 @@ export default function FeedbackForm({ display, adminSettings }) {
     }
 
     const handleDelete = _ => {
-        router.delete(`/admin/feedback/${activeSetting.id}`);
+        //router.delete(`/admin/feedback/${activeSetting.id}`);
         setShowModal(false);
     }
 

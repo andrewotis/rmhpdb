@@ -13,7 +13,7 @@ export default function FeedbackForm({ display, adminSettings }) {
     const { flash } = usePage().props;
 
     const handleSubmit = _ => {
-        // router.post("/admin/feedback/", {email: email});
+        router.post("/admin/feedback/", {email: email});
     }
 
     const handleDelete = _ => {
@@ -70,14 +70,16 @@ export default function FeedbackForm({ display, adminSettings }) {
                         })
                     }
                 </table>
-                <input type="text" style={{width: '400px', padding: '5px'}} onChange={e => setEmail(e.target.value)} placeholder="Email address..." /> 
-                <button
-                    style={{marginLeft: '10px' , padding: '5px'}}
-                    disabled={!validate(email)}
-                    onClick={validate(email) ? handleSubmit : undefined}
-                >
-                    add
-                </button>
+                <form onSubmit={handleSubmit}>
+                    <input type="text" style={{width: '400px', padding: '5px'}} onChange={e => setEmail(e.target.value)} placeholder="Email address..." /> 
+                    <button
+                        style={{marginLeft: '10px' , padding: '5px'}}
+                        disabled={!validate(email)}
+                        type="submit"
+                    >
+                        add
+                    </button>
+                </form>
             </main>
         </>
     )

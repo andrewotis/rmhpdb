@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { router, usePage, Link } from '@inertiajs/react';
+import { router, usePage } from '@inertiajs/react';
 import { validate } from 'email-validator';
 import Flash from "../Flash";
 

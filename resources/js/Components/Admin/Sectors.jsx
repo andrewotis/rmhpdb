@@ -38,7 +38,7 @@ export default function Sectors({ display, sectors }) {
                         {
                             sectors.map(sector => {
                                 return (
-                                    <tr>
+                                    <tr key={sector.id}>
                                         <td>{sector.number}</td>
                                         <td>{sector.nora_sector_group}</td>
                                         <td>{sector.naics_code}</td>

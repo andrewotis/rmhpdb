@@ -36,7 +36,7 @@ export default function Credentials({ display, credentials }) {
                         {
                             credentials.map(cred => {
                                 return (
-                                    <tr>
+                                    <tr key={cred.id}>
                                         <td>{cred.credential}</td>
                                         <td>{cred.description}</td>
                                     </tr>

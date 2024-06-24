@@ -37,7 +37,7 @@ export default function Categories({ display, categories }) {
                         {
                             categories.map(cat => {
                                 return (
-                                    <tr>
+                                    <tr key={cat.id}>
                                         <td>{cat.number}</td>
                                         <td>{cat.category}</td>
                                     </tr>

@@ -13,10 +13,6 @@ export default function Admin({ auth, adminSettings, credentials, sectors, categ
     const [activeTab, setActiveTab] = useState('users');
     const [sidebarActive, setSidebarActive] = useState(false);
 
-    useEffect(() => {
-        console.log(adminSettings); 
-    },[]);
-
     return (
         <>
             <div className="admin">

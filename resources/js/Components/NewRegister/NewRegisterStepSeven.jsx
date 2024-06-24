@@ -11,8 +11,6 @@ export default function NewRegisterStepSeven({ values, setValues, display, admin
             }
         });
     }
-
-    console.log(adminSettings);
     
     return (
         <div className={!display ? 'display-none' : ''}>

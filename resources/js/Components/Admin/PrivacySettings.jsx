@@ -49,7 +49,7 @@ export default function PrivacySettings({ display, adminSettings }) {
                     {
                         adminSettings.map(setting => {
                             return setting.type == 'privacy' && (
-                                <tr >
+                                <tr key={`p-${setting.key}`}>
                                     <td>{setting.key.replace("_", " ")}</td>
                                     <td>
                                         <ToggleSwitch 

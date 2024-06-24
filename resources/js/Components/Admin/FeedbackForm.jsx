@@ -59,17 +59,19 @@ export default function FeedbackForm({ display, adminSettings }) {
                 { flash.message && <div style={{backgroundColor: "#fff"}}><Flash type="success" message={flash.message}/></div> }
                 { errors.error && <div style={{backgroundColor: "#fff"}}><Flash type="error" message={errors.error}/></div> }
                 <table style={{backgroundColor: "#fff", width: '400px', marginTop: "1rem"}}>
-                    {
-                        adminSettings && adminSettings.map(setting => {
-                            if(setting.type == 'feedback_recipient') {
-                                return (
-                                    <tr key={setting.id}>
-                                        <td>{ setting.value } <box-icon size="sm" onClick={() => handleActionClick(setting)} name='checkbox-minus' type="solid"/></td>
-                                    </tr>
-                                )
-                            }
-                        })
-                    }
+                    <tbody>
+                        {
+                            adminSettings && adminSettings.map(setting => {
+                                if(setting.type == 'feedback_recipient') {
+                                    return (
+                                        <tr key={setting.id}>
+                                            <td>{ setting.value } <box-icon size="sm" onClick={() => handleActionClick(setting)} name='checkbox-minus' type="solid"/></td>
+                                        </tr>
+                                    )
+                                }
+                            })
+                        }
+                    </tbody>
                 </table>
                 <form onSubmit={handleSubmit}>
                     <input type="text" style={{width: '400px', padding: '5px'}} onChange={e => setEmail(e.target.value)} placeholder="Email address..." /> 

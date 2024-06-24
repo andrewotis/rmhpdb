@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder {
     public function run(): void {
         User::factory()
             ->count(190)
-            ->sequence(fn (Sequence $sequence) => ['registration_number' => $sequence->index])
+            ->sequence(fn (Sequence $sequence) => ['registration_number' => ($sequence->index+1)])
             ->create();
 
         $this->createAdmin();

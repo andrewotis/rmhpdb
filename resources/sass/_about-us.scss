@@ -30,7 +30,7 @@
         color: $white;
         width: 100% !important;
         border-radius: 0 !important;
-        background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url("http://localhost:8000/img/shutterstock_2077106.jpg");
+        background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url("/img/shutterstock_2077106.jpg");
         background-size: cover;
         h1 {            
             font-size: 20pt;
@@ -100,7 +100,7 @@
             }
         }
         .right {
-            background-image: url("http://localhost:8000/img/crop-doctors-shaking-hands.jpg");
+            background-image: url("/img/crop-doctors-shaking-hands.jpg");
             background-size: cover;
             background-position: 0 100%;
             @media(max-width: $tablet-breakpoint) {

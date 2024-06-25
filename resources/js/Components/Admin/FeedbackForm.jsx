@@ -14,7 +14,7 @@ export default function FeedbackForm({ display, adminSettings }) {
 
     const handleSubmit = e => {
         e.preventDefault();
-        router.post("/admin/feedback/", {email: email});
+        router.post("/admin/feedback", {email: email});
     }
 
     const handleDelete = _ => {

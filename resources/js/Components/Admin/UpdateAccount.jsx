@@ -59,7 +59,7 @@ export default function UpdateAccount({ display, auth }) {
     const handleSubmit = e => {
         e.preventDefault();
         if(inputValid()) {
-            router.put(`/admin/account/`, values);
+            router.put(`/admin/account`, values);
         }
     }
 

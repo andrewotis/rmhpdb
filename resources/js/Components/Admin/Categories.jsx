@@ -15,7 +15,7 @@ export default function Categories({ display, categories }) {
     }
 
     const handleSubmit = _ => {
-        router.post(`/admin/category/`, values);
+        router.post(`/admin/category`, values);
     }
 
     return (

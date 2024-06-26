@@ -15,7 +15,7 @@ export default function Credentials({ display, credentials }) {
     }
 
     const handleSubmit = _ => {
-        router.post(`/admin/credential/`, values);
+        router.post(`/admin/credential`, values);
     }
 
     return (

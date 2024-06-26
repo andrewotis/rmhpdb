@@ -29,7 +29,7 @@ export default function PrivacySettings({ display, adminSettings }) {
     }
 
     const handleSubmit = _ => {
-        router.post(`/admin/privacy/`, {settings: values});
+        router.post(`/admin/privacy`, {settings: values});
     }
 
     return (

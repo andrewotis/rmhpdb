@@ -16,7 +16,7 @@ export default function Sectors({ display, sectors }) {
     }
 
     const handleSubmit = _ => {
-        router.post(`/admin/sector/`, values);
+        router.post(`/admin/sector`, values);
     }
 
     return (

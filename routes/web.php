@@ -1,20 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FeedbackController;
-use Inertia\Inertia;
-use Illuminate\Support\Facades\Auth;
-use App\Models\AdminSetting;
-use App\Models\Credential;
-use App\Models\HazardCategory;
-use App\Models\Sector;
-use App\Models\User;
-use Database\Seeders\StatesAndCities;
 use App\Http\Controllers\PasswordResetController;
-use App\Http\PasswordGenerator;
+use App\Http\Controllers\QuizController;
 
 Route::get('/', function() {
     return Inertia::render('Home', [
@@ -39,7 +33,6 @@ Route::get('/about', function() {
 Route::middleware('auth')->group(function () {
     Route::get('/account', [UserController::class, 'viewAccountPage']);    
     Route::put('/account', [UserController::class, 'update']);
-    
 
     Route::get('/admin', [AdminController::class, 'viewAdminPage']);
     Route::put('/admin/password/reset/{user_id}', [AdminController::class, 'resetUserPassword']);
@@ -52,15 +45,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/sector', [AdminController::class, 'addSector']);
     Route::post('/admin/category', [AdminController::class, 'addCategory']);
     Route::put('/admin/account', [AdminController::class, 'updateAdminAccount']);
+    Route::get('/logout', [LoginController::class, 'logout']);
 });
+
+Route::get('/quiz', [QuizController::class, 'viewQuiz']);
 
 Route::post('/admin/register', [AdminController::class, 'registerAdmin']);
 
 Route::post('/users', [UserController::class, 'store']);
-Route::post('/account/email', [UserController::class, 'checkEmail']);
 
 Route::get('/login', [LoginController::class, 'viewLogin'])->name('login');
-Route::get('/logout', [LoginController::class, 'logout']);
 Route::post('/login', [LoginController::class, 'authenticate']);
 
 Route::post('/database/search', [UserController::class, 'search']);

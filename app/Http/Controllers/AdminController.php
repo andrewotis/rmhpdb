@@ -98,9 +98,14 @@ class AdminController extends Controller {
     }
 
     public function registerAdmin(Request $request) {
-        Log::error("In registerAdmin");
         $input = $request->input();
-        $token_record = RegistrationToken::where('token', $input['token'])->first();
+        $token_record = RegistrationToken::where('token', $input['token'])->get();
+
+        if($token_record->count() == 0) {
+            return redirect()->route('login')->withErrors(['error' => 'Invalid registration token.']);
+        } else {
+            $token_record = $token_record->first();
+        }
 
         $user = User::create([
             'first_name' => $token_record->first_name,
@@ -115,7 +120,6 @@ class AdminController extends Controller {
         $user->save();
 
         $token_record->delete();
-        Log::error("About to redirect to /login");
         return redirect()->route('login')->with(['message' => 'Registration successful. Please log in to continue.']);
     }
 

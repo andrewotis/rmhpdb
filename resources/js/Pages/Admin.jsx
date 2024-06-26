@@ -12,6 +12,13 @@ import UpdateAccount from "../Components/Admin/UpdateAccount";
 export default function Admin({ auth, adminSettings, credentials, sectors, categories, users}) {
     const [activeTab, setActiveTab] = useState('users');
     const [sidebarActive, setSidebarActive] = useState(false);
+    const [flashMessageSeen, setFlashMessageSeen] = useState(true);
+    const [errorMessageSeen, setErrorMessageSeen] = useState(false);
+
+    useEffect(() => {
+        setFlashMessageSeen(true);
+        setErrorMessageSeen(true);
+    },[activeTab]);
 
     return (
         <>
@@ -44,6 +51,10 @@ export default function Admin({ auth, adminSettings, credentials, sectors, categ
 
                 <Users 
                     display={activeTab == 'users'} 
+                    setFlashMessageSeen={setFlashMessageSeen}
+                    flashMessageSeen={flashMessageSeen}
+                    setErrorMessageSeen={setErrorMessageSeen}
+                    errorMessageSeen={errorMessageSeen}
                     users={users}
                     auth={auth}
                     setActiveTab={setActiveTab}
@@ -53,30 +64,65 @@ export default function Admin({ auth, adminSettings, credentials, sectors, categ
                 />
                 <FeedbackForm 
                     display={activeTab == 'feedbackForm'}
+                    setFlashMessageSeen={setFlashMessageSeen}
+                    flashMessageSeen={flashMessageSeen}
+                    setErrorMessageSeen={setErrorMessageSeen}
+                    errorMessageSeen={errorMessageSeen}
+                    users={users}
                     adminSettings={adminSettings}
                 />
                 <PrivacySettings 
                     display={activeTab == 'privacySettings'}
+                    setFlashMessageSeen={setFlashMessageSeen}
+                    flashMessageSeen={flashMessageSeen}
+                    setErrorMessageSeen={setErrorMessageSeen}
+                    errorMessageSeen={errorMessageSeen}
+                    users={users}
                     adminSettings={adminSettings}
                 />
                 <Credentials 
                     display={activeTab == 'credentials'}
+                    setFlashMessageSeen={setFlashMessageSeen}
+                    flashMessageSeen={flashMessageSeen}
+                    setErrorMessageSeen={setErrorMessageSeen}
+                    errorMessageSeen={errorMessageSeen}
+                    users={users}
                     credentials={credentials}
                 />
                 <Sectors 
                     display={activeTab == 'sectors'}
+                    setFlashMessageSeen={setFlashMessageSeen}
+                    flashMessageSeen={flashMessageSeen}
+                    setErrorMessageSeen={setErrorMessageSeen}
+                    errorMessageSeen={errorMessageSeen}
+                    users={users}
                     sectors={sectors}
                 />
                 <Categories 
                     display={activeTab == 'categories'}
+                    setFlashMessageSeen={setFlashMessageSeen}
+                    flashMessageSeen={flashMessageSeen}
+                    setErrorMessageSeen={setErrorMessageSeen}
+                    errorMessageSeen={errorMessageSeen}
+                    users={users}
                     categories={categories}
                 />
                 <CreateAdmin 
                     display={activeTab == 'createAdmin'}
+                    setFlashMessageSeen={setFlashMessageSeen}
+                    flashMessageSeen={flashMessageSeen}
+                    setErrorMessageSeen={setErrorMessageSeen}
+                    errorMessageSeen={errorMessageSeen}
+                    users={users}
                     setActiveTab={setActiveTab}
                 />
                 <UpdateAccount
                     display={activeTab == 'updateAccount'}
+                    setFlashMessageSeen={setFlashMessageSeen}
+                    flashMessageSeen={flashMessageSeen}
+                    setErrorMessageSeen={setErrorMessageSeen}
+                    errorMessageSeen={errorMessageSeen}
+                    users={users}
                     auth={auth}
                 />
             </div>

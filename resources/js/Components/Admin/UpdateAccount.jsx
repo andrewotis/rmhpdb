@@ -4,10 +4,19 @@ import Flash from "../Flash";
 import { createPasswordValidatorSchema } from '../../passwordTools';
 import { validate } from 'email-validator';
 
-export default function UpdateAccount({ display, auth }) {
+export default function UpdateAccount({ display, auth, setFlashMessageSeen, flashMessageSeen, setErrorMessageSeen, errorMessageSeen }) {
     const { errors } = usePage().props;
     const { flash } = usePage().props;
     const [schema, setSchema] = useState(null);
+
+    useEffect(() => {
+        setFlashMessageSeen(false);
+    },[flash.message]);
+
+    useEffect(() => {
+        setErrorMessageSeen(false);
+    },[errors.error]);
+
     const [values, setValues] = useState({
         email: '',
         password: '',
@@ -68,8 +77,8 @@ export default function UpdateAccount({ display, auth }) {
             <main className={`content${!display ? ' display-none' : ''}`}>
                 <h1>Update Account</h1>
                 <p>Change email address or password of the currently logged in admin account. You can update email, update password, or update both.</p><br />
-                { flash.message && <><div style={{backgroundColor: "#fff"}}><Flash type="success" message={flash.message}/></div><br /></> }
-                { errors.error && <><div style={{backgroundColor: "#fff"}}><Flash type="error" message={errors.error}/></div><br /></> }
+                { flash.message && !flashMessageSeen && <><div style={{backgroundColor: "#fff"}}><Flash type="success" message={flash.message}/></div><br /></> }
+                { errors.error && !errorMessageSeen && <><div style={{backgroundColor: "#fff"}}><Flash type="error" message={errors.error}/></div><br /></> }
                 { passwordErrors.length > 0 && <><div style={{backgroundColor: "#fff", whiteSpace: 'pre-line'}}><Flash type="error" message={passwordErrors}/></div><br /></> }
                 <form onSubmit={handleSubmit}>
                     <input 

@@ -1,10 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { router, usePage } from '@inertiajs/react';
 import Flash from "../Flash";
 
-export default function Sectors({ display, sectors }) {
+export default function Sectors({ display, sectors, setFlashMessageSeen, flashMessageSeen, setErrorMessageSeen, errorMessageSeen }) {
     const { errors } = usePage().props;
     const { flash } = usePage().props;
+
+    useEffect(() => {
+        setFlashMessageSeen(false);
+    },[flash.message]);
+
+    useEffect(() => {
+        setErrorMessageSeen(false);
+    },[errors.error]);
+
     const [values, setValues] = useState({
         number: '',
         nora_sector_group: '',
@@ -24,8 +33,8 @@ export default function Sectors({ display, sectors }) {
             <main className={`content${!display ? ' display-none' : ''}`}>
                 <h1>Sectors</h1>
                 <p>Manage industry sectors.</p>
-                { flash.message && <div style={{backgroundColor: "#fff"}}><Flash type="success" message={flash.message}/></div> }
-                { errors.error && <div style={{backgroundColor: "#fff"}}><Flash type="error" message={errors.error}/></div> }
+                { flash.message && !flashMessageSeen && <div style={{backgroundColor: "#fff"}}><Flash type="success" message={flash.message}/></div> }
+                { errors.error && !errorMessageSeen && <div style={{backgroundColor: "#fff"}}><Flash type="error" message={errors.error}/></div> }
                 <table className="admin-privacy-settings-table">
                     <thead>
                         <tr>

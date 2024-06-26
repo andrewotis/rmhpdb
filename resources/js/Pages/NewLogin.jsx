@@ -57,6 +57,10 @@ export default function NewLogin({ auth }) {
                                 filled
                                 disabled={!valid()}
                                 onClick={valid() ? handleSubmit : undefined}
+                                style={{
+                                    float: 'right',
+                                    width: '100px'
+                                }}
                             >
                                 Login
                             </Button>

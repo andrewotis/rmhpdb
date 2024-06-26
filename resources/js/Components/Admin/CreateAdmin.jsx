@@ -3,9 +3,17 @@ import { router, usePage } from '@inertiajs/react';
 import { validate } from 'email-validator';
 import Flash from "../Flash";
 
-export default function CreateAdmin({ display, setActiveTab }) {
+export default function CreateAdmin({ display, setActiveTab, setFlashMessageSeen, flashMessageSeen, setErrorMessageSeen, errorMessageSeen }) {
     const { flash } = usePage().props;
     const { errors } = usePage().props;
+
+    useEffect(() => {
+        setFlashMessageSeen(false);
+    },[flash.message]);
+
+    useEffect(() => {
+        setErrorMessageSeen(false);
+    },[errors.error]);
 
     const [values, setValues] = useState({
         first_name: '',
@@ -33,8 +41,8 @@ export default function CreateAdmin({ display, setActiveTab }) {
                 <h1><span onClick={() => setActiveTab('users')}>Users</span> &gt; Create Admin</h1>
                 <p>Create a new administrative account.</p>
 
-                { flash.message && <div style={{backgroundColor: "#fff"}}><Flash type="success" message={flash.message}/></div> }
-                { errors.error && <div style={{backgroundColor: "#fff"}}><Flash type="error" message={errors.error}/></div> }
+                { flash.message && !flashMessageSeen && <div style={{backgroundColor: "#fff"}}><Flash type="success" message={flash.message}/></div> }
+                { errors.error && !errorMessageSeen && <div style={{backgroundColor: "#fff"}}><Flash type="error" message={errors.error}/></div> }
                 
                 <table style={{width: '500px', marginTop: '1rem', color: "#fff"}}>
                     <tbody>

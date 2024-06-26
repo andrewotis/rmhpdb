@@ -1,16 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { router, usePage } from '@inertiajs/react';
 import { validate } from 'email-validator';
 import Flash from "../Flash";
 import Modal from "../Modal";
 import { BoxIconElement } from "boxicons";
 
-export default function FeedbackForm({ display, adminSettings }) {
+export default function FeedbackForm({ display, adminSettings, setFlashMessageSeen, flashMessageSeen, setErrorMessageSeen, errorMessageSeen }) {
     const [showModal, setShowModal] = useState(false);
     const [activeSetting, setActiveSetting] = useState({});
     const [email, setEmail] = useState('');
     const { errors } = usePage().props;
     const { flash } = usePage().props;
+
+    useEffect(() => {
+        setFlashMessageSeen(false);
+    },[flash.message]);
+
+    useEffect(() => {
+        setErrorMessageSeen(false);
+    },[errors.error]);
+
 
     const handleSubmit = e => {
         e.preventDefault();
@@ -56,8 +65,8 @@ export default function FeedbackForm({ display, adminSettings }) {
             <main className={`content${!display ? ' display-none' : ''}`}>
                 <h1>Feedback Form</h1>
                 <p>Manage feedback form recipients.</p>
-                { flash.message && <div style={{backgroundColor: "#fff"}}><Flash type="success" message={flash.message}/></div> }
-                { errors.error && <div style={{backgroundColor: "#fff"}}><Flash type="error" message={errors.error}/></div> }
+                { flash.message && !flashMessageSeen && <div style={{backgroundColor: "#fff"}}><Flash type="success" message={flash.message}/></div> }
+                { errors.error && !errorMessageSeen && <div style={{backgroundColor: "#fff"}}><Flash type="error" message={errors.error}/></div> }
                 <table style={{backgroundColor: "#fff", width: '400px', marginTop: "1rem"}}>
                     <tbody>
                         {

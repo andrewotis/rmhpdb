@@ -6,15 +6,27 @@ import { BoxIconElement } from "boxicons";
 import { prettifyDate } from '../../tools';
 
 
-export default function Users({ display, users, auth, setActiveTab, credentials, categories, sectors }) {
+export default function Users({ 
+    display, users, auth, setActiveTab, credentials, categories, sectors, setFlashMessageSeen, flashMessageSeen, setErrorMessageSeen, errorMessageSeen
+}) {
     const [error, setError] = useState('');
     const { errors } = usePage().props;
     const { flash } = usePage().props;
     const [showModal, setShowModal] = useState(false);
+
+    useEffect(() => {
+        setFlashMessageSeen(false);
+    },[flash.message]);
+
+    useEffect(() => {
+        setErrorMessageSeen(false);
+    },[errors.error, error]);
+
     const [action, setAction] = useState({
         type: '',
         user: {}
     });
+
     const [filtered, setFiltered] = useState(users);
     const [filterTerms, setFilterTerms] = useState({
         name: '',
@@ -239,18 +251,18 @@ export default function Users({ display, users, auth, setActiveTab, credentials,
             </Modal>
             <main className={`content${!display ? ' display-none' : ''}`}>
                 <h1>Users</h1>
-                <p>In the actions column, use the magnifier icon to view a user's details. The x icon disables a user's account. Disabled accounts will 
-                    still be in the system but the user can not log in and will not be displayed in the public database. In case a user forgets their password AND loses access
-                    to their email account, use the lock icon to reset their password. A strong temporary password will be generated for them and displayed just above the table below.
+                <p>In the actions column, use the magnifier icon <box-icon name='search-alt' color="#007acc"/> to view a user's details. The x icon <box-icon type='solid' name='message-square-x' color="#007acc"/> disables a user's account. Disabled accounts will 
+                    still be in the system but the user can not log in and will not be displayed in the public database. The plus icon <box-icon type='solid' name='message-square-add' color="#007acc"/> will re-activate a user's account. In case a user forgets their password AND loses access
+                    to their email account, use the lock icon <box-icon type='solid' name='lock-open' color="#007acc"/> to reset their password. A strong temporary password will be generated for them and displayed just above the table below.
                 </p>
                 <button
                     onClick={() => setActiveTab('createAdmin')}
                 >
                     Create Admin Account
                 </button>
-                { flash.message && <div style={{backgroundColor: "#fff"}}><Flash type="success" message={flash.message}/></div> }
-                { errors.error && <div style={{backgroundColor: "#fff"}}><Flash type="error" message={errors.error}/></div> }
-                { error != '' && <div style={{backgroundColor: "#fff"}}><Flash type="error" message={error}/></div> }
+                { flash.message && !flashMessageSeen && <div style={{backgroundColor: "#fff"}}><Flash type="success" message={flash.message}/></div> }
+                { errors.error && !errorMessageSeen && <div style={{backgroundColor: "#fff"}}><Flash type="error" message={errors.error}/></div> }
+                { error != '' && !errorMessageSeen && <div style={{backgroundColor: "#fff"}}><Flash type="error" message={error}/></div> }
                 <table className="admin-users-table">
                     <thead>
                         <tr>
@@ -302,10 +314,14 @@ export default function Users({ display, users, auth, setActiveTab, credentials,
                                             <box-icon 
                                                 type='solid' 
                                                 name='lock-open' 
+                                                size="xs"
+                                                color="#007acc"
                                                 onClick={() => handleActionClick('password', user)}
                                             />
                                             <box-icon 
                                                 name='search-alt'
+                                                size="xs"
+                                                color="#007acc"
                                                 onClick={() => handleActionClick('view', user)}
                                             />
                                             { 
@@ -313,11 +329,15 @@ export default function Users({ display, users, auth, setActiveTab, credentials,
                                                     <box-icon 
                                                         type='solid' 
                                                         name='message-square-x' 
+                                                        size="xs"
+                                                        color="#007acc"
                                                         onClick={() => handleActionClick('status', user)}
                                                     /> : 
                                                         <box-icon 
                                                             name='message-square-add' 
                                                             type='solid'
+                                                            size="xs"
+                                                            color="#007acc"
                                                             onClick={() => handleActionClick('status', user)}
                                                         /> 
                                             }                                            

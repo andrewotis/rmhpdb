@@ -62,7 +62,7 @@ export default function AdminRegister( {tokenRecord, auth }) {
     }
 
     const handleSubmit = _ => {
-        router.post(`/admin/register/`, {...values, ...tokenRecord});
+        router.post(`/admin/register`, {...values, ...tokenRecord});
     }
 
     return (

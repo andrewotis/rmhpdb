@@ -73,7 +73,7 @@ export default function NewAccount({ auth, user, credentials, categories, sector
     }
 
     const handleSubmit = _ => {
-        router.put(`/account/`, {
+        router.put(`/account`, {
                 old: {...transformedInitialValues},
                 new: {...values}
             }
